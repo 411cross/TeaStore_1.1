@@ -42,18 +42,47 @@ public class UserOperation {
         JSONObject object = new JSONObject(json);
         JSONObject data = object.getJSONObject("data");
 
-        ArrayList arrayList = new ArrayList();
-        arrayList.add(0, data.getInt("userId"));
-        arrayList.add(1, data.getString("name"));
-        arrayList.add(2, data.getString("avatar"));
-        arrayList.add(3, data.getInt("finish"));
-        arrayList.add(4, data.getInt("score"));
+        ArrayList userArrayList = new ArrayList();
+        userArrayList.add(0, data.getInt("userId"));
+        userArrayList.add(1, data.getString("name"));
+        userArrayList.add(2, data.getString("avatar"));
+        userArrayList.add(3, data.getInt("finish"));
+        userArrayList.add(4, data.getInt("score"));
 
-        return arrayList;
+        return userArrayList;
     }
 
     /**
-     * upgradeJson 登录的用户申请成为代理商
+     * modifyUserInfo
+     * 已登录用户修改地址
+     * User user, String name(opt), String imagePath(opt) -> void
+     */
+    public static void modifyUserInfo(User user, String name, String imagePath) throws JSONException {
+
+        okHttpTools okht = new okHttpTools();
+        String token = user.getToken();
+        String tokenJson = GeneralOperation.tokenToJson(token);
+        String URL = "http://139.199.226.190:8080/api/v1/modifyInfo";
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("Authorization", tokenJson);
+        jsonObject.put("name", name);
+        jsonObject.put("avatar", imagePath);
+        String json = jsonObject.toString();
+
+        try {
+            okht.postTools(URL, json, token, 1);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * upgradeJson
+     * 登录的用户申请成为代理商
      * ArrayList list -> String json
      */
     public static String upgradeJson(ArrayList list) throws JSONException {
@@ -118,23 +147,22 @@ public class UserOperation {
     }
 
     /**
-     *  CreateAddress
+     * CreateAddress
      * 上传收货人，收货地址，收货人电话.
      * User user -> void (直接修改对应 user 中的 token 属性）
      */
-
-    public static ArrayList CreateAddress(User user,String consigneeName,String consigneePhone,String consigneeAddress) throws JSONException {
+    public static ArrayList CreateAddress(User user, String consigneeName, String consigneePhone, String consigneeAddress) throws JSONException {
         okHttpTools okhttpT = new okHttpTools();    // 新建HTTP代理
         JSONObject jObject = new JSONObject();
-        String Authorization = "Bearer " +user.getToken();
+        String Authorization = "Bearer " + user.getToken();
         jObject.put("Authorization", Authorization);
         jObject.put("phone", consigneePhone);
         jObject.put("name", consigneeName);
-        jObject.put("content",consigneeAddress);
+        jObject.put("content", consigneeAddress);
         String userjson = jObject.toString();       //转换成JSON串
         String URL = "http://139.199.226.190:8080/api/v1/address/create";  //请求URL   每个操作都有一个URL
         try {
-            okhttpT.postTools(URL, userjson,Authorization, 0);      //提交JSON 到服务器
+            okhttpT.postTools(URL, userjson, Authorization, 0);      //提交JSON 到服务器
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -148,9 +176,12 @@ public class UserOperation {
         return responseList;
     }
 
-
-
-    public static List getAddress(List<Address> addressList) throws JSONException {
+    /**
+     * getAddress
+     * 获取用户地址并生成 addressList
+     * List<Address> addressList(null) -> List addressList
+     */
+    public static ArrayList getAddress(ArrayList<Address> addressList) throws JSONException {
 
         User user = GeneralOperation.getUser();
         okHttpTools okht = new okHttpTools();
@@ -159,7 +190,7 @@ public class UserOperation {
         String URL = "http://139.199.226.190:8080/api/v1/address/get";
 
         try {
-            okht.postTools(URL, tokenJson, token, 1);
+            okht.postTools(URL, tokenJson, token, 3);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -167,24 +198,33 @@ public class UserOperation {
         }
 
         ArrayList responseList = okht.getResponse();
-        String data = GeneralOperation.tokenToString((String) responseList.get(1));
+        String data = (String) responseList.get(1);
+        JSONObject object = new JSONObject(data);
+        JSONArray jsonArray = object.getJSONArray("data");
 
-        JSONArray jsonArray = new JSONArray(data);
         for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-            int address_id = jsonObject.getInt("address_id");
-            int userId = jsonObject.getInt("userId");
-            String phone = jsonObject.getString("phone");
-            String name = jsonObject.getString("name");
-            String content = jsonObject.getString("cotent");
+            JSONObject addressData = (JSONObject) jsonArray.get(i);
+            int address_id = addressData.getInt("address_id");
+            int userId = addressData.getInt("userId");
+            String phone = addressData.getString("phone");
+            String name = addressData.getString("name");
+            String content = addressData.getString("content");
             Address address = new Address(address_id, userId, phone, name, content);
-            addressList.add(address);
+            addressList.add(i, address);
         }
+        user.setAddressList(addressList);
 
-        return addressList;
+        return responseList;
+
+        //在 Activity 中完善返回码的部分
 
     }
 
+    /**
+     * deleteAddress
+     * 删除用户选定地址
+     * int addressID -> ArrayList responseList
+     */
     public static ArrayList DeleteAddress(int addressID) throws JSONException {
         okHttpTools okhttpT = new okHttpTools();    // 新建HTTP代理
         JSONObject jObject = new JSONObject();
@@ -203,6 +243,8 @@ public class UserOperation {
         ArrayList responseList = okhttpT.getResponse();
         return responseList;
     }
+
+
 
 
 }

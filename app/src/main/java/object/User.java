@@ -1,5 +1,9 @@
 package object;
 
+import java.util.ArrayList;
+
+import listview.Address;
+
 /**
  * Created by Administrator on 2017/5/25.
  */
@@ -8,9 +12,10 @@ public class User {
     private String password = null;
     private String email = null;
     private String token = null;
+    private int userId;
+    private ArrayList<Address> addressList;
 
     public User() {
-
 
     }
 
@@ -18,8 +23,6 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
-
-
     }
 
 
@@ -53,5 +56,22 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+
+    public ArrayList<Address> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(ArrayList<Address> addressList) {
+        this.addressList = addressList;
     }
 }

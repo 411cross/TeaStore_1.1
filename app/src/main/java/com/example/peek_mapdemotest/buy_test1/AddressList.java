@@ -1,6 +1,8 @@
 package com.example.peek_mapdemotest.buy_test1;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -21,9 +23,10 @@ import listview.Goods;
 import operation.UserOperation;
 
 
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class AddressList extends ActionBarActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
-    private List<Address> addressList = new ArrayList<Address>();
+    private ArrayList<Address> addressList = new ArrayList<Address>();
 
 
     @Override
