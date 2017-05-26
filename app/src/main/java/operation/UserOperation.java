@@ -19,8 +19,23 @@ public class UserOperation {
      * infoToList 登录用户获取账号信息
      * String json -> ArrayList list
      */
-    public static ArrayList userInfo(String json) throws JSONException {
+    public static ArrayList userInfo(User user) throws JSONException {
 
+        okHttpTools okht = new okHttpTools();
+        String token = user.getToken();
+        String tokenJson = GeneralOperation.tokenToJson(token);
+        String URL="http://139.199.226.190:8080/api/v1/getInfo";
+
+        try {
+            okht.postTools(URL,tokenJson, token, 1);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList responseList= okht.getResponse();
+        String json = GeneralOperation.tokenToString((String)responseList.get(1));
         JSONObject object = new JSONObject(json);
         JSONObject data = object.getJSONObject("data");
 
@@ -95,7 +110,6 @@ public class UserOperation {
 
         ArrayList responseList= okht.getResponse();
         String newToken = GeneralOperation.tokenToString((String)responseList.get(1));
-        System.out.println((String)responseList.get(1));
         user.setToken(newToken);
 
     }
