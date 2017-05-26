@@ -145,6 +145,8 @@ public class UserOperation {
         return responseList;
     }
 
+      public static ArrayList DeleteAddress(int addressID){
 
+      }
 
 }
