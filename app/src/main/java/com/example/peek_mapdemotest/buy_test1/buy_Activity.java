@@ -147,7 +147,7 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
                                 Log.i("122", ED2.getText().toString());
                                 try {
                                     ArrayList list1 ;
-                                    list1= UserOperation.CreateAddress(GeneralOperation.getUser(),ED1.getText().toString(), ED2.getText().toString(), ED3.getText().toString());
+                                    list1= UserOperation.CreateAddress(GeneralOperation.getUser(),ED1.getText().toString(), ED3.getText().toString(), ED2.getText().toString());
                                     if(Integer.parseInt((String)list1.get(0))!=201){
                                         JSONObject object = new JSONObject((String)list1.get(1));
                                         String message = object.getString("message");
