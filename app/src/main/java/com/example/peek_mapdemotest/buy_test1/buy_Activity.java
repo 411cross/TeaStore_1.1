@@ -1,5 +1,7 @@
 package com.example.peek_mapdemotest.buy_test1;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -7,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -101,12 +104,29 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
         inflater.inflate(R.menu.user_menu, popup.getMenu());
         popup.setOnMenuItemClickListener(this);
         popup.show();
+
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.createAddress:
+                final TextView  TV1 = new TextView(this);
+                TV1.setText("收货人：");
+                final EditText inputServer = new EditText(this);
+                final TextView  TV2 = new TextView(this);
+                TV1.setText("收货地址：");
+                final EditText inputServer1 = new EditText(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("创建收货地址").setIcon(android.R.drawable.ic_dialog_info).setView(TV1).setView(inputServer).setView(TV2).setView(inputServer1)
+                        .setNegativeButton("Cancel", null);
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        inputServer.getText().toString();
+                    }
+                });
+                builder.show();
                 Toast.makeText(this, "创建收货地址", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.checkAddress:
