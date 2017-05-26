@@ -26,7 +26,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import listview.Address;
 import listview.Goods;
 import listview.GoodsAdapter;
 import object.User;

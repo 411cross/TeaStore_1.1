@@ -11,6 +11,8 @@ android {
         versionName "1.0"
 
 
+
+
     }
     buildTypes {
         release {
@@ -19,6 +21,8 @@ android {
         }
     }
     productFlavors {
+
+        
     }
 }
 
@@ -29,6 +33,7 @@ dependencies {
     compile 'com.squareup.okio:okio:1.5.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'org.json:json:20160212'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
+//    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
     compile files('libs/sun.misc.BASE64Decoder.jar')
+
 }

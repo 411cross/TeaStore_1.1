@@ -6,7 +6,6 @@
      android:title="创建收货地址"/>
     <item android:title="查看收货地址"
         android:id="@+id/checkAddress">
-
-   </item>
+    </item>
 
 </menu>
