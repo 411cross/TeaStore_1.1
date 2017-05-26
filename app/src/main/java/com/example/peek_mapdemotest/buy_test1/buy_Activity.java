@@ -121,6 +121,7 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
         inflater.inflate(R.menu.user_menu, popup.getMenu());
         popup.setOnMenuItemClickListener(this);
         popup.show();
+
     }
 
     @Override
@@ -144,7 +145,20 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
                                 EditText ED3 = (EditText) myLoginView.findViewById(R.id.Consignee_phonenumber);
                                 Log.i("111", ED1.getText().toString());
                                 Log.i("122", ED2.getText().toString());
-
+                                try {
+                                    ArrayList list1 ;
+                                    list1= UserOperation.CreateAddress(GeneralOperation.getUser(),ED1.getText().toString(), ED2.getText().toString(), ED3.getText().toString());
+                                    if(Integer.parseInt((String)list1.get(0))!=201){
+                                        JSONObject object = new JSONObject((String)list1.get(1));
+                                        String message = object.getString("message");
+                                        Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{
+                                        Toast.makeText(getApplicationContext(),"创建成功！",Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
 
                             }
                         }).
