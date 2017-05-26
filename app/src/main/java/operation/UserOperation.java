@@ -50,7 +50,7 @@ public class UserOperation {
     }
 
     /**
-     * upgradeJson 登录用户申请成为代理商
+     * upgradeJson 登录的用户申请成为代理商
      * ArrayList list -> String json
      */
     public static String upgradeJson(ArrayList list) throws JSONException {
