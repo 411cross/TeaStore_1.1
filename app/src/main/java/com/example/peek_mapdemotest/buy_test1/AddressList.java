@@ -2,6 +2,7 @@ package com.example.peek_mapdemotest.buy_test1;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Path;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -12,14 +13,19 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import listview.Address;
 import listview.AddressAdapter;
 import listview.Goods;
+import object.User;
+import operation.GeneralOperation;
 import operation.UserOperation;
 
 
@@ -27,6 +33,8 @@ import operation.UserOperation;
 public class AddressList extends ActionBarActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
     private ArrayList<Address> addressList = new ArrayList<Address>();
+    User user = GeneralOperation.getUser();
+
 
 
     @Override
@@ -35,7 +43,8 @@ public class AddressList extends ActionBarActivity implements View.OnClickListen
         setContentView(R.layout.activity_address_list);
 
         try {
-            addressList = UserOperation.getAddress(addressList);
+            ArrayList responseList = UserOperation.getAddress();
+            addressList = user.getAddressList();
         } catch (JSONException e) {
             e.printStackTrace();
         }
