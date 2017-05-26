@@ -23,10 +23,11 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:19.1.0'
     //    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile files('libs/gson-2.8.0.jar')
+    compile 'com.android.support:appcompat-v7:19.1.0'
     compile 'com.squareup.okio:okio:1.5.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile files('libs/gson-2.8.0.jar')
     compile 'org.json:json:20160212'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
 }
