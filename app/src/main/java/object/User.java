@@ -4,19 +4,20 @@ package object;
  * Created by Administrator on 2017/5/25.
  */
 public class User {
-    private String username=null;
-    private String password= null;
+    private String username = null;
+    private String password = null;
     private String email = null;
-    private String token=null;
+    private String token = null;
 
-    public User(){
+    public User() {
 
 
     }
-    public User(String username,String password,String email){
-        this.username=username;
-        this.password=password;
-        this.email=email;
+
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
 
 
     }

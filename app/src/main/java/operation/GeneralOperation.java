@@ -15,7 +15,7 @@ import okhttp_tools.okHttpTools;
  * Created by Administrator on 2017/5/25.
  */
 public class GeneralOperation {
-    public static User user =null;
+    public static User user = null;
 
     public static String createJsonString(Object value) {
         Gson gson = new Gson();
@@ -25,13 +25,35 @@ public class GeneralOperation {
 
 
     public static User getUser(String jsonString) {
-        User user =new User();
+        User user = new User();
         Gson gson = new Gson();
-        user = gson.fromJson(jsonString,User.class);
+        user = gson.fromJson(jsonString, User.class);
         return user;
     }
 
+    /**
+     blabla
+     */
+    public static String tokenToString(String json) throws JSONException {
 
+        JSONObject object = new JSONObject(json);
+        JSONObject data = object.getJSONObject("data");
+        String token = data.getString("token");
+
+        return token;
+
+    }
+
+    public static String tokenToJson(String string) throws JSONException {
+
+        String newToken = "Bearer " + string;
+        JSONObject object = new JSONObject();
+        object.put("Authorization", newToken);
+        String json = object.toString();
+
+        return json;
+
+    }
 
 
 //    public static User getAgent(String jsonString) {
@@ -47,16 +69,16 @@ public class GeneralOperation {
 //        return admin;
 //    }
 
-    public static ArrayList register(String username ,String password,String email) throws JSONException {
-        okHttpTools okhttpT=new okHttpTools();
+    public static ArrayList register(String username, String password, String email) throws JSONException {
+        okHttpTools okhttpT = new okHttpTools();
         JSONObject jObject = new JSONObject();
-        jObject.put("username",username);
-        jObject.put("password",password);
-        jObject.put("email",email);
+        jObject.put("username", username);
+        jObject.put("password", password);
+        jObject.put("email", email);
         String userRegJson = jObject.toString();
-        String URL ="http://dawnki.cn:8100/api/v1/register";
+        String URL = "http://dawnki.cn:8100/api/v1/register";
         try {
-            okhttpT.postTools(URL,userRegJson,null,0);
+            okhttpT.postTools(URL, userRegJson, null, 0);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -68,27 +90,27 @@ public class GeneralOperation {
 
     }
 
-    public static ArrayList login(String username,String password) throws JSONException {
-        okHttpTools okhttpT=new okHttpTools();    // 新建HTTP代理
+    public static ArrayList login(String username, String password) throws JSONException {
+        okHttpTools okhttpT = new okHttpTools();    // 新建HTTP代理
         JSONObject jObject = new JSONObject();
-        jObject.put("username",username);
-        jObject.put("password",password);
+        jObject.put("username", username);
+        jObject.put("password", password);
         String userjson = jObject.toString();       //转换成JSON串
-        String URL="http://dawnki.cn:8100/api/v1/login";  //请求URL   每个操作都有一个URL
+        String URL = "http://dawnki.cn:8100/api/v1/login";  //请求URL   每个操作都有一个URL
         try {
-            okhttpT.postTools(URL,userjson,null,0);      //提交JSON 到服务器
+            okhttpT.postTools(URL, userjson, null, 0);      //提交JSON 到服务器
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        ArrayList responseList= okhttpT.getResponse();//接受响应responseList    get(0)：状态码  get（1）：整个内容。
-        if(Integer.parseInt((String) okhttpT.getResponse().get(0))==201){
+        ArrayList responseList = okhttpT.getResponse();//接受响应responseList    get(0)：状态码  get（1）：整个内容。
+        if (Integer.parseInt((String) okhttpT.getResponse().get(0)) == 201) {
             JSONObject object = new JSONObject((String) okhttpT.getResponse().get(1));
             JSONObject data = object.getJSONObject("data");
             String token = data.getString("token");
             String email = data.getString("email");
-            user = new User(username,password,email);
+            user = new User(username, password, email);
             user.setToken(token);
         }
         return responseList;
@@ -115,21 +137,21 @@ public class GeneralOperation {
     }
 
     public static ArrayList logout(User user) throws JSONException {
-        okHttpTools okhttpT=new okHttpTools();    // 新建HTTP代理
+        okHttpTools okhttpT = new okHttpTools();    // 新建HTTP代理
         JSONObject jObject = new JSONObject();
-        String Authorization = "Bearer "+user.getToken();
-        jObject.put("Authorization",Authorization);
+        String Authorization = "Bearer " + user.getToken();
+        jObject.put("Authorization", Authorization);
         String userjson = jObject.toString();       //转换成JSON串
-        String URL="http://dawnki.cn:8100/api/v1/login";  //请求URL   每个操作都有一个URL
+        String URL = "http://dawnki.cn:8100/api/v1/login";  //请求URL   每个操作都有一个URL
         try {
-            okhttpT.postTools(URL,userjson,null,2);      //提交JSON 到服务器
+            okhttpT.postTools(URL, userjson, null, 2);      //提交JSON 到服务器
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        ArrayList responseList= okhttpT.getResponse();//接受响应responseList    get(0)：状态码  get（1）：整个内容。
-        if(Integer.parseInt((String) okhttpT.getResponse().get(0))==201){
+        ArrayList responseList = okhttpT.getResponse();//接受响应responseList    get(0)：状态码  get（1）：整个内容。
+        if (Integer.parseInt((String) okhttpT.getResponse().get(0)) == 201) {
             JSONObject object = new JSONObject((String) okhttpT.getResponse().get(1));
 //            String Authorization = data.getString("Authorization");
         }

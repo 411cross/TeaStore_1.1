@@ -14,19 +14,19 @@ import okhttp3.Response;
  * Created by Administrator on 2017/5/24.
  */
 public class handler implements Callable {
-    public static final MediaType JSON=MediaType.parse("application/json;charset=utf-8");
-    public  String responseData = null;
-    public String jsonData=null;
-    public String URL=null;
-    public String Header=null;
+    public static final MediaType JSON = MediaType.parse("application/json;charset=utf-8");
+    public String responseData = null;
+    public String jsonData = null;
+    public String URL = null;
+    public String Header = null;
     public int operation;
 
-// 0 :post 1: put 2: delete 3:get
-    public handler(String URL,String jsonData,String header,int operation) {
-        this.jsonData=jsonData;
-        this.URL=URL;
-        this.Header=header;
-        this.operation=operation;
+    // 0 :post 1: put 2: delete 3:get
+    public handler(String URL, String jsonData, String header, int operation) {
+        this.jsonData = jsonData;
+        this.URL = URL;
+        this.Header = header;
+        this.operation = operation;
     }
 
     @Override
@@ -34,14 +34,14 @@ public class handler implements Callable {
         OkHttpClient client = new OkHttpClient();
         ArrayList result = new ArrayList();
         RequestBody requestBody = RequestBody.create(JSON, jsonData);
-        switch (operation){
+        switch (operation) {
             case 0:
-                Request request = new Request.Builder().url(URL).addHeader("Authorization", "Bearer "+Header).addHeader("Content-Type", "application/json").post(requestBody).build();
+                Request request = new Request.Builder().url(URL).addHeader("Authorization", "Bearer " + Header).addHeader("Content-Type", "application/json").post(requestBody).build();
                 try {
                     Response response = client.newCall(request).execute();
-                    responseData=response.body().string();
-                    String res= responseData;
-                    result.add(response.code()+"");
+                    responseData = response.body().string();
+                    String res = responseData;
+                    result.add(response.code() + "");
                     result.add(res);
 
                 } catch (IOException e) {
@@ -49,12 +49,12 @@ public class handler implements Callable {
                 }
                 break;
             case 1:
-                Request request1 = new Request.Builder().url(URL).addHeader("Authorization", "Bearer "+Header).addHeader("Content-Type", "application/json").put(requestBody).build();
+                Request request1 = new Request.Builder().url(URL).addHeader("Authorization", "Bearer " + Header).addHeader("Content-Type", "application/json").put(requestBody).build();
                 try {
                     Response response = client.newCall(request1).execute();
-                    responseData=response.body().string();
-                    String res= responseData;
-                    result.add(response.code()+"");
+                    responseData = response.body().string();
+                    String res = responseData;
+                    result.add(response.code() + "");
                     result.add(res);
 
                 } catch (IOException e) {
@@ -62,12 +62,12 @@ public class handler implements Callable {
                 }
                 break;
             case 2:
-                Request request2 = new Request.Builder().url(URL).addHeader("Authorization", "Bearer "+Header).addHeader("Content-Type", "application/json").delete(requestBody).build();
+                Request request2 = new Request.Builder().url(URL).addHeader("Authorization", "Bearer " + Header).addHeader("Content-Type", "application/json").delete(requestBody).build();
                 try {
                     Response response = client.newCall(request2).execute();
-                    responseData=response.body().string();
-                    String res= responseData;
-                    result.add(response.code()+"");
+                    responseData = response.body().string();
+                    String res = responseData;
+                    result.add(response.code() + "");
                     result.add(res);
 
                 } catch (IOException e) {
@@ -75,12 +75,12 @@ public class handler implements Callable {
                 }
                 break;
             case 3:
-                Request request3 = new Request.Builder().url(URL).addHeader("Authorization", "Bearer "+Header).addHeader("Content-Type", "application/json").build();
+                Request request3 = new Request.Builder().url(URL).addHeader("Authorization", "Bearer " + Header).addHeader("Content-Type", "application/json").build();
                 try {
                     Response response = client.newCall(request3).execute();
-                    responseData=response.body().string();
-                    String res= responseData;
-                    result.add(response.code()+"");
+                    responseData = response.body().string();
+                    String res = responseData;
+                    result.add(response.code() + "");
                     result.add(res);
 
                 } catch (IOException e) {
@@ -90,7 +90,6 @@ public class handler implements Callable {
 
 
         }
-
 
 
         return result;
