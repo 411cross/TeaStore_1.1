@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--<TextView-->
+        <!--android:id="@+id/address_id"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="地址ID" />-->
+
+    <TextView
+        android:id="@+id/address_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="收件人姓名" />
+
+    <TextView
+        android:id="@+id/address_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="收件地址" />
+
+    <TextView
+        android:id="@+id/address_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="收件人电话" />
+
+</LinearLayout>

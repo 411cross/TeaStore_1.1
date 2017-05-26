@@ -17,6 +17,7 @@ import okhttp_tools.okHttpTools;
  * Created by Administrator on 2017/5/25.
  */
 public class GeneralOperation {
+
     public static User user = null;
 
     public static String createJsonString(Object value) {

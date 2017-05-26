@@ -30,16 +30,16 @@ public class MainActivity_buy extends ActionBarActivity {
     private TextView tvTest;
     private Button button2;
 
-    public static final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity_buy);
-        button1 = (Button)findViewById(R.id.button1);
-        ET1 = (EditText)findViewById(R.id.ET1);
-        ET2 = (EditText)findViewById(R.id.ET2);
+        button1 = (Button) findViewById(R.id.button1);
+        ET1 = (EditText) findViewById(R.id.ET1);
+        ET2 = (EditText) findViewById(R.id.ET2);
 //        tvTest = (TextView) findViewById(R.id.Test_TV);
-        button2 = (Button)findViewById(R.id.button2);
+        button2 = (Button) findViewById(R.id.button2);
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,19 +47,18 @@ public class MainActivity_buy extends ActionBarActivity {
                 String username = ET1.getText().toString();
                 String password = ET2.getText().toString();
                 try {
-                   ArrayList list = GeneralOperation.login(username, password);
+                    ArrayList list = GeneralOperation.login(username, password);
 
                     Log.i("1230", (String) list.get(1));
-                    if (Integer.parseInt((String)list.get(0))!=201){
-                        JSONObject object = new JSONObject((String)list.get(1));
-                        Log.i("jonlist1", (String)list.get(1));
+                    if (Integer.parseInt((String) list.get(0)) != 201) {
+                        JSONObject object = new JSONObject((String) list.get(1));
+                        Log.i("jonlist1", (String) list.get(1));
                         String message = object.getString("message");
                         Log.i("jonlist2", message);
                         Toast.makeText(MainActivity_buy.this, message, Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        Toast.makeText(MainActivity_buy.this,"登录成功！",Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(MainActivity_buy.this,buy_Activity.class);
+                    } else {
+                        Toast.makeText(MainActivity_buy.this, "登录成功！", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MainActivity_buy.this, buy_Activity.class);
                         startActivity(intent);
 
                     }
@@ -68,17 +67,14 @@ public class MainActivity_buy extends ActionBarActivity {
                 }
 
 
-
-
             }
         });
-
 
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity_buy.this,register.class);
+                Intent intent = new Intent(MainActivity_buy.this, register.class);
                 startActivity(intent);
 
             }
@@ -86,6 +82,7 @@ public class MainActivity_buy extends ActionBarActivity {
 
 
     }
+
     private void showResponse(final String responseData) {
         runOnUiThread(new Runnable() {
             @Override
@@ -96,8 +93,6 @@ public class MainActivity_buy extends ActionBarActivity {
 
 
     }
-
-
 
 
     @Override

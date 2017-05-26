@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import listview.Address;
 import listview.Goods;
 import listview.GoodsAdapter;
 import object.User;
@@ -120,6 +121,7 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
         inflater.inflate(R.menu.user_menu, popup.getMenu());
         popup.setOnMenuItemClickListener(this);
         popup.show();
+
     }
 
     @Override
@@ -145,7 +147,7 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
                                 Log.i("122", ED2.getText().toString());
                                 try {
                                     ArrayList list1 ;
-                                    list1= UserOperation.CreateAddress(GeneralOperation.getUser(),ED1.getText().toString(), ED2.getText().toString(), ED3.getText().toString());
+                                    list1= UserOperation.CreateAddress(GeneralOperation.getUser(),ED1.getText().toString(), ED3.getText().toString(), ED2.getText().toString());
                                     if(Integer.parseInt((String)list1.get(0))!=201){
                                         JSONObject object = new JSONObject((String)list1.get(1));
                                         String message = object.getString("message");
@@ -189,6 +191,8 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
                 break;
             case R.id.checkAddress:
                 Toast.makeText(this, "查看收货地址", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(buy_Activity.this, AddressList.class);
+                startActivity(intent);
                 break;
 
             case R.id.Address1:
