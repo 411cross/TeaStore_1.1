@@ -40,7 +40,7 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
     private List<Goods> goodsList = new ArrayList<Goods>();
     private TextView welTV;
     private TextView outTV;
-    private User user=null;
+    private User user = null;
     public ArrayList list = new ArrayList();
 
     public buy_Activity() {
@@ -52,11 +52,10 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
         setContentView(R.layout.buy_content);
 
 
-
-        welTV= (TextView) findViewById(R.id.welcomeTV);
-        outTV= (TextView) findViewById(R.id.outTV);
-        user =GeneralOperation.getUser();
-        welTV.setText(user.getUsername() +"欢迎你！");
+        welTV = (TextView) findViewById(R.id.welcomeTV);
+        outTV = (TextView) findViewById(R.id.outTV);
+        user = GeneralOperation.getUser();
+        welTV.setText(user.getUsername() + "欢迎你！");
         welTV.setOnClickListener(this);
         outTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,9 +83,9 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Goods goods = goodsList.get(i);
                 Toast.makeText(buy_Activity.this, goods.getGoods_name(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(buy_Activity.this,goods_detail.class);
-                intent.putExtra("goods_name",goods.getGoods_name());
-                intent.putExtra("goods_imageID",goods.getImageId());
+                Intent intent = new Intent(buy_Activity.this, goods_detail.class);
+                intent.putExtra("goods_name", goods.getGoods_name());
+                intent.putExtra("goods_imageID", goods.getImageId());
                 startActivity(intent);
             }
         });
@@ -97,7 +96,7 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
         for (int i = 0; i < 2; i++) {
             Goods goods = new Goods("apple", R.drawable.abc_menu_hardkey_panel_holo_dark);
             goodsList.add(goods);
-            Goods bbbb = new Goods("bbbb",R.drawable.abc_menu_hardkey_panel_holo_dark);
+            Goods bbbb = new Goods("bbbb", R.drawable.abc_menu_hardkey_panel_holo_dark);
             goodsList.add(bbbb);
             Goods cccc = new Goods("cccc", R.drawable.abc_menu_hardkey_panel_holo_dark);
             goodsList.add(cccc);
@@ -145,15 +144,14 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
                                 Log.i("111", ED1.getText().toString());
                                 Log.i("122", ED2.getText().toString());
                                 try {
-                                    ArrayList list1 ;
-                                    list1= UserOperation.CreateAddress(GeneralOperation.getUser(),ED1.getText().toString(), ED3.getText().toString(), ED2.getText().toString());
-                                    if(Integer.parseInt((String)list1.get(0))!=201){
-                                        JSONObject object = new JSONObject((String)list1.get(1));
+                                    ArrayList list1;
+                                    list1 = UserOperation.CreateAddress(GeneralOperation.getUser(), ED1.getText().toString(), ED3.getText().toString(), ED2.getText().toString());
+                                    if (Integer.parseInt((String) list1.get(0)) != 201) {
+                                        JSONObject object = new JSONObject((String) list1.get(1));
                                         String message = object.getString("message");
-                                        Toast.makeText(getApplicationContext(),message, Toast.LENGTH_SHORT).show();
-                                    }
-                                    else{
-                                        Toast.makeText(getApplicationContext(),"创建成功！",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "创建成功！", Toast.LENGTH_SHORT).show();
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -189,9 +187,22 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
                 Toast.makeText(this, "创建收货地址", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.checkAddress:
-                Toast.makeText(this, "查看收货地址", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(buy_Activity.this, AddressList.class);
-                startActivity(intent);
+                try {
+                    ArrayList responseList = UserOperation.getAddress();
+                    if (Integer.parseInt((String) responseList.get(0)) != 200) {
+                        JSONObject jsonObject = new JSONObject((String) responseList.get(1));
+                        String message = jsonObject.getString("message");
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        Toast.makeText(this, "查看收货地址", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(buy_Activity.this, AddressList.class);
+                        startActivity(intent);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 break;
 
 

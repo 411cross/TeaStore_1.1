@@ -23,6 +23,8 @@ import java.util.ArrayList;
 
 import listview.Address;
 import listview.AddressAdapter;
+import object.User;
+import operation.GeneralOperation;
 import operation.UserOperation;
 
 
@@ -30,7 +32,7 @@ import operation.UserOperation;
 public class AddressList extends ActionBarActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, AdapterView.OnItemLongClickListener {
 
     private ArrayList<Address> addressList = new ArrayList<Address>();
-
+    User user = GeneralOperation.getUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,8 @@ public class AddressList extends ActionBarActivity implements View.OnClickListen
         setContentView(R.layout.activity_address_list);
 
         try {
-            addressList = UserOperation.getAddress(addressList);
+            ArrayList responseList = UserOperation.getAddress();
+            addressList = user.getAddressList();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -101,8 +104,8 @@ public class AddressList extends ActionBarActivity implements View.OnClickListen
                     ArrayList list = UserOperation.DeleteAddress(addID);
                     if(Integer.parseInt((String)list.get(0))!=204){
                         JSONObject object = new JSONObject((String)list.get(1));
-                        object.getString("message");
-                        Toast.makeText(getApplicationContext(),"",Toast.LENGTH_SHORT).show();
+                        String message = object.getString("message");
+                        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

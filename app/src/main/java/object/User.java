@@ -15,6 +15,7 @@ public class User {
     private int userId;
     private ArrayList<Address> addressList;
 
+
     public User() {
 
     }
