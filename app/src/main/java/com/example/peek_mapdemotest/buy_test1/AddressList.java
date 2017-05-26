@@ -3,7 +3,6 @@ package com.example.peek_mapdemotest.buy_test1;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -53,13 +52,15 @@ public class AddressList extends ActionBarActivity implements View.OnClickListen
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Address address = addressList.get(i);
-                Toast.makeText(AddressList.this, address.getAddress_id(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(AddressList.this, goods_detail.class);
-                intent.putExtra("address_id", address.getAddress_id());
-                intent.putExtra("address_name", address.getName());
-                intent.putExtra("address_phone", address.getPhone());
-                intent.putExtra("address_content", address.getContent());
-                startActivity(intent);
+
+                Toast.makeText(AddressList.this, String.valueOf(address.getAddress_id()), Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(AddressList.this, goods_detail.class);
+//                intent.putExtra("address_id", address.getAddress_id());
+//                intent.putExtra("address_name", address.getName());
+//                intent.putExtra("address_phone", address.getPhone());
+//                intent.putExtra("address_content", address.getContent());
+//                startActivity(intent);
+
             }
         });
 
@@ -107,11 +108,14 @@ public class AddressList extends ActionBarActivity implements View.OnClickListen
                         String message = object.getString("message");
                         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
                     }
+                    else{
+                        Toast.makeText(getApplicationContext(),"删除成功！",Toast.LENGTH_SHORT).show();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                Toast.makeText(getApplicationContext(),"",Toast.LENGTH_SHORT).show();
+
             }
         });
         return false;
