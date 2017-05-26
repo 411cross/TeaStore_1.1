@@ -35,8 +35,6 @@ public class AddressList extends ActionBarActivity implements View.OnClickListen
     private ArrayList<Address> addressList = new ArrayList<Address>();
     User user = GeneralOperation.getUser();
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

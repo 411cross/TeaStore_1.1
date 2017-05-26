@@ -12,6 +12,8 @@ import listview.Address;
 import object.User;
 import okhttp_tools.okHttpTools;
 
+import static operation.GeneralOperation.user;
+
 /**
  * Created by derrickJ on 2017/5/26.
  */
@@ -181,8 +183,9 @@ public class UserOperation {
      * 获取用户地址并生成 addressList
      * List<Address> addressList(null) -> List addressList
      */
-    public static ArrayList getAddress(ArrayList<Address> addressList) throws JSONException {
+    public static ArrayList getAddress() throws JSONException {
 
+        ArrayList<Address> addressList = new ArrayList<Address>();
         User user = GeneralOperation.getUser();
         okHttpTools okht = new okHttpTools();
         String token = user.getToken();
