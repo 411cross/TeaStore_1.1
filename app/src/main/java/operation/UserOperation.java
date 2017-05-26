@@ -16,8 +16,8 @@ import okhttp_tools.okHttpTools;
 public class UserOperation {
 
     /**
-     *infoToList 登录用户获取账号信息
-     *String json -> ArrayList list
+     * infoToList 登录用户获取账号信息
+     * String json -> ArrayList list
      */
     public static ArrayList userInfo(String json) throws JSONException {
 
@@ -35,8 +35,8 @@ public class UserOperation {
     }
 
     /**
-     *upgradeJson 登录用户申请成为代理商
-     *ArrayList list -> String json
+     * upgradeJson 登录用户申请成为代理商
+     * ArrayList list -> String json
      */
     public static String upgradeJson(ArrayList list) throws JSONException {
 
@@ -52,9 +52,9 @@ public class UserOperation {
     }
 
     /**
-     *upgradeInfo
-     *登录用户获取自己的升级申请
-     *String json -> ArrayList list
+     * upgradeInfo
+     * 登录用户获取自己的升级申请
+     * String json -> ArrayList list
      */
     public static ArrayList upgardeInfo(String json) throws JSONException {
 
@@ -74,9 +74,9 @@ public class UserOperation {
     }
 
     /**
-     *updateToken
+     * updateToken
      * 用户上传现有 token 服务器下发新的 token
-     * User user >> 修改对应 user 中的 token 属性
+     * User user -> void (直接修改对应 user 中的 token 属性）
      */
     public static void updateToken(User user) throws JSONException {
 
