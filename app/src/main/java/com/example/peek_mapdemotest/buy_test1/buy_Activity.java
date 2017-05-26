@@ -195,13 +195,7 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
 
-            case R.id.Address1:
-                Toast.makeText(this, "设置地址一为收货地址成功！", Toast.LENGTH_SHORT).show();
-                break;
 
-            case R.id.Address2:
-                Toast.makeText(this, "設置地址二为收货地址成功！", Toast.LENGTH_SHORT).show();
-                break;
             default:
                 break;
         }

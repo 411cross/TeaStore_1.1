@@ -112,10 +112,12 @@ public class GeneralOperation {
             JSONObject object = new JSONObject((String) okhttpT.getResponse().get(1));
             JSONObject data = object.getJSONObject("data");
             String token = data.getString("token");
+            int userId = data.getInt("userId");
             Log.i("TOKEN", token);
             String email = data.getString("email");
             user = new User(username, password, email);
             user.setToken(token);
+            user.setUserId(userId);
         }
         return responseList;
     }
