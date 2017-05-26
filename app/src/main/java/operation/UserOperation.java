@@ -116,9 +116,10 @@ public class UserOperation {
 
     /**
      *  CreateAddress
-     * 上传收货人，收货地址，收货人电话
+     * 上传收货人，收货地址，收货人电话.
      * User user -> void (直接修改对应 user 中的 token 属性）
      */
+
     public static ArrayList CreateAddress(User user,String consigneeName,String consigneePhone,String consigneeAddress) throws JSONException {
         okHttpTools okhttpT = new okHttpTools();    // 新建HTTP代理
         JSONObject jObject = new JSONObject();
