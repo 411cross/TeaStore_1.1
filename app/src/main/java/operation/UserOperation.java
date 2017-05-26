@@ -114,4 +114,36 @@ public class UserOperation {
 
     }
 
+    /**
+     *  CreateAddress
+     * 上传收货人，收货地址，收货人电话
+     * User user -> void (直接修改对应 user 中的 token 属性）
+     */
+    public static ArrayList CreateAddress(User user,String consigneeName,String consigneePhone,String consigneeAddress) throws JSONException {
+        okHttpTools okhttpT = new okHttpTools();    // 新建HTTP代理
+        JSONObject jObject = new JSONObject();
+        String Authorization = "Bearer " +user.getToken();
+        jObject.put("Authorization", Authorization);
+        jObject.put("phone", consigneePhone);
+        jObject.put("name", consigneeName);
+        jObject.put("content",consigneeAddress);
+        String userjson = jObject.toString();       //转换成JSON串
+        String URL = "http://139.199.226.190:8080/api/v1/address/create";  //请求URL   每个操作都有一个URL
+        try {
+            okhttpT.postTools(URL, userjson,Authorization, 0);      //提交JSON 到服务器
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        ArrayList responseList = okhttpT.getResponse();//接受响应responseList    get(0)：状态码  get（1）：整个内容。
+//        if (Integer.parseInt((String) okhttpT.getResponse().get(0)) == 201) {
+//            JSONObject object = new JSONObject((String) okhttpT.getResponse().get(1));
+//
+//        }
+        return responseList;
+    }
+
+
+
 }

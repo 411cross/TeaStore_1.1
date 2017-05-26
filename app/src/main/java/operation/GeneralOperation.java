@@ -1,5 +1,7 @@
 package operation;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -109,6 +111,7 @@ public class GeneralOperation {
             JSONObject object = new JSONObject((String) okhttpT.getResponse().get(1));
             JSONObject data = object.getJSONObject("data");
             String token = data.getString("token");
+            Log.i("TOKEN", token);
             String email = data.getString("email");
             user = new User(username, password, email);
             user.setToken(token);
@@ -144,7 +147,7 @@ public class GeneralOperation {
         String userjson = jObject.toString();       //转换成JSON串
         String URL = "http://139.199.226.190:8080/api/v1/login";  //请求URL   每个操作都有一个URL
         try {
-            okhttpT.postTools(URL, userjson, null, 2);      //提交JSON 到服务器
+            okhttpT.postTools(URL, userjson,Authorization, 2);      //提交JSON 到服务器
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
