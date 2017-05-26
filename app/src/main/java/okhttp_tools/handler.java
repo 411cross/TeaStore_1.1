@@ -21,7 +21,7 @@ public class handler implements Callable {
     public String Header = null;
     public int operation;
 
-    // 0 :post 1: put 2: delete 3:get
+    // 0:post   1: put   2: delete   3:get
     public handler(String URL, String jsonData, String header, int operation) {
         this.jsonData = jsonData;
         this.URL = URL;

@@ -1,10 +1,15 @@
 package com.example.peek_mapdemotest.buy_test1;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,18 +21,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import listview.Address;
 import listview.Goods;
 import listview.GoodsAdapter;
 import object.User;
 import operation.GeneralOperation;
+import operation.UserOperation;
 
 /**
  * Created by Administrator on 2017/5/24.
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class buy_Activity extends ActionBarActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     private List<Goods> goodsList = new ArrayList<Goods>();
     private TextView welTV;
@@ -35,10 +44,16 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
     private User user=null;
     public ArrayList list = new ArrayList();
 
+    public buy_Activity() {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buy_content);
+
+
+
         welTV= (TextView) findViewById(R.id.welcomeTV);
         outTV= (TextView) findViewById(R.id.outTV);
         user =GeneralOperation.getUser();
@@ -97,40 +112,73 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
 
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onClick(View view) {
+//
         PopupMenu popup = new PopupMenu(this, view);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.user_menu, popup.getMenu());
         popup.setOnMenuItemClickListener(this);
         popup.show();
-
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.createAddress:
-                final TextView  TV1 = new TextView(this);
-                TV1.setText("收货人：");
-                final EditText inputServer = new EditText(this);
-                final TextView  TV2 = new TextView(this);
-                TV1.setText("收货地址：");
-                final EditText inputServer1 = new EditText(this);
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("创建收货地址").setIcon(android.R.drawable.ic_dialog_info).setView(TV1).setView(inputServer).setView(TV2).setView(inputServer1)
-                        .setNegativeButton("Cancel", null);
-                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int which) {
-                        inputServer.getText().toString();
-                    }
-                });
-                builder.show();
+
+                LayoutInflater layoutInflater = LayoutInflater.from(this);
+                final View myLoginView = layoutInflater.inflate(R.layout.user_address, null);
+                Dialog alertDialog = new AlertDialog.Builder(this).
+                        setTitle("创建收货地址").setView(myLoginView).
+                        setIcon(android.R.drawable.ic_dialog_info).
+                        setPositiveButton("提交", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // TODO Auto-generated method stub
+                                EditText ED1 = (EditText) myLoginView.findViewById(R.id.Consignee_name);
+                                EditText ED2 = (EditText) myLoginView.findViewById(R.id.Consignee_address);
+                                EditText ED3 = (EditText) myLoginView.findViewById(R.id.Consignee_phonenumber);
+                                Log.i("111", ED1.getText().toString());
+                                Log.i("122", ED2.getText().toString());
+
+
+                            }
+                        }).
+                        setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // TODO Auto-generated method stub
+                            }
+                        }).
+                        create();
+                alertDialog.show();
+//                final TextView  TV1 = new TextView(this);
+//                TV1.setText("收货人：");
+//                final EditText inputServer = new EditText(this);
+//                final TextView  TV2 = new TextView(this);
+//                TV1.setText("收货地址：");
+//                final EditText inputServer1 = new EditText(this);
+//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                builder.setTitle("创建收货地址").setIcon(android.R.drawable.ic_dialog_info).setView(TV1).setView(inputServer).setView(TV2).setView(inputServer1)
+//                        .setNegativeButton("Cancel", null);
+//                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        inputServer.getText().toString();
+//                    }
+//                });
+//                builder.show();
                 Toast.makeText(this, "创建收货地址", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.checkAddress:
                 Toast.makeText(this, "查看收货地址", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(buy_Activity.this, AddressList.class);
+                startActivity(intent);
                 break;
 
             case R.id.Address1:

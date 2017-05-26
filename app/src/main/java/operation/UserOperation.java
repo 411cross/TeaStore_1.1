@@ -1,11 +1,14 @@
 package operation;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import listview.Address;
 import object.User;
 import okhttp_tools.okHttpTools;
 
@@ -24,18 +27,18 @@ public class UserOperation {
         okHttpTools okht = new okHttpTools();
         String token = user.getToken();
         String tokenJson = GeneralOperation.tokenToJson(token);
-        String URL="http://139.199.226.190:8080/api/v1/getInfo";
+        String URL = "http://139.199.226.190:8080/api/v1/getInfo";
 
         try {
-            okht.postTools(URL,tokenJson, token, 1);
+            okht.postTools(URL, tokenJson, token, 1);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        ArrayList responseList= okht.getResponse();
-        String json = GeneralOperation.tokenToString((String)responseList.get(1));
+        ArrayList responseList = okht.getResponse();
+        String json = GeneralOperation.tokenToString((String) responseList.get(1));
         JSONObject object = new JSONObject(json);
         JSONObject data = object.getJSONObject("data");
 
@@ -98,20 +101,56 @@ public class UserOperation {
         okHttpTools okht = new okHttpTools();
         String oldToken = user.getToken();
         String tokenJson = GeneralOperation.tokenToJson(oldToken);
-        String URL="http://139.199.226.190:8080/api/v1/updateToken";
+        String URL = "http://139.199.226.190:8080/api/v1/updateToken";
 
         try {
-            okht.postTools(URL,tokenJson, oldToken, 1);
+            okht.postTools(URL, tokenJson, oldToken, 1);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        ArrayList responseList= okht.getResponse();
-        String newToken = GeneralOperation.tokenToString((String)responseList.get(1));
+        ArrayList responseList = okht.getResponse();
+        String newToken = GeneralOperation.tokenToString((String) responseList.get(1));
         user.setToken(newToken);
 
     }
+
+    public static List getAddress(List<Address> addressList) throws JSONException {
+
+        User user = GeneralOperation.getUser();
+        okHttpTools okht = new okHttpTools();
+        String token = user.getToken();
+        String tokenJson = GeneralOperation.tokenToJson(token);
+        String URL = "http://139.199.226.190:8080/api/v1/address/get";
+
+        try {
+            okht.postTools(URL, tokenJson, token, 1);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList responseList = okht.getResponse();
+        String data = GeneralOperation.tokenToString((String) responseList.get(1));
+
+        JSONArray jsonArray = new JSONArray(data);
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+            int address_id = jsonObject.getInt("address_id");
+            int userId = jsonObject.getInt("userId");
+            String phone = jsonObject.getString("phone");
+            String name = jsonObject.getString("name");
+            String content = jsonObject.getString("cotent");
+            Address address = new Address(address_id, userId, phone, name, content);
+            addressList.add(address);
+        }
+
+        return addressList;
+
+    }
+
 
 }
