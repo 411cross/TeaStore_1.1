@@ -1,11 +1,14 @@
 package operation;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import listview.Address;
 import object.User;
 import okhttp_tools.okHttpTools;
 
@@ -115,23 +118,23 @@ public class UserOperation {
     }
 
     /**
-     *  CreateAddress
+     * CreateAddress
      * 上传收货人，收货地址，收货人电话.
      * User user -> void (直接修改对应 user 中的 token 属性）
      */
 
-    public static ArrayList CreateAddress(User user,String consigneeName,String consigneePhone,String consigneeAddress) throws JSONException {
+    public static ArrayList CreateAddress(User user, String consigneeName, String consigneePhone, String consigneeAddress) throws JSONException {
         okHttpTools okhttpT = new okHttpTools();    // 新建HTTP代理
         JSONObject jObject = new JSONObject();
-        String Authorization = "Bearer " +user.getToken();
+        String Authorization = "Bearer " + user.getToken();
         jObject.put("Authorization", Authorization);
         jObject.put("phone", consigneePhone);
         jObject.put("name", consigneeName);
-        jObject.put("content",consigneeAddress);
+        jObject.put("content", consigneeAddress);
         String userjson = jObject.toString();       //转换成JSON串
         String URL = "http://139.199.226.190:8080/api/v1/address/create";  //请求URL   每个操作都有一个URL
         try {
-            okhttpT.postTools(URL, userjson,Authorization, 0);      //提交JSON 到服务器
+            okhttpT.postTools(URL, userjson, Authorization, 0);      //提交JSON 到服务器
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -146,7 +149,6 @@ public class UserOperation {
     }
 
 
-
     public static List getAddress(List<Address> addressList) throws JSONException {
 
         User user = GeneralOperation.getUser();
@@ -156,7 +158,7 @@ public class UserOperation {
         String URL = "http://139.199.226.190:8080/api/v1/address/get";
 
         try {
-            okht.postTools(URL, tokenJson, token, 1);
+            okht.postTools(URL, tokenJson, token, 3);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -164,18 +166,19 @@ public class UserOperation {
         }
 
         ArrayList responseList = okht.getResponse();
-        String data = GeneralOperation.tokenToString((String) responseList.get(1));
+        String data = (String) responseList.get(1);
+        JSONObject object = new JSONObject(data);
+        JSONArray jsonArray = object.getJSONArray("data");
 
-        JSONArray jsonArray = new JSONArray(data);
         for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-            int address_id = jsonObject.getInt("address_id");
-            int userId = jsonObject.getInt("userId");
-            String phone = jsonObject.getString("phone");
-            String name = jsonObject.getString("name");
-            String content = jsonObject.getString("cotent");
+            JSONObject addressData = (JSONObject) jsonArray.get(i);
+            int address_id = addressData.getInt("address_id");
+            int userId = addressData.getInt("userId");
+            String phone = addressData.getString("phone");
+            String name = addressData.getString("name");
+            String content = addressData.getString("content");
             Address address = new Address(address_id, userId, phone, name, content);
-            addressList.add(address);
+            addressList.add(i, address);
         }
 
         return addressList;

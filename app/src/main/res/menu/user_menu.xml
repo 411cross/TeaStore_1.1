@@ -6,21 +6,7 @@
      android:title="创建收货地址"/>
     <item android:title="查看收货地址"
         android:id="@+id/checkAddress">
-    <menu>
-        <item
-            android:id="@+id/Address1"
-            android:orderInCategory="300"
-            android:showAsAction="never"
-            android:title="地址一"
-            tools:ignore="AppCompatResource" />
-        <item
-            android:id="@+id/Address2"
-            android:orderInCategory="400"
-            android:showAsAction="never"
-            android:title="地址二1"
-            tools:ignore="AppCompatResource" />
 
-    </menu>
    </item>
 
 </menu>

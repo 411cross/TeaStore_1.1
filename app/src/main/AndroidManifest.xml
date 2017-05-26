@@ -20,6 +20,7 @@
         <activity android:name=".buy_Activity"></activity>
         <activity android:name=".goods_detail"></activity>
         <activity android:name=".register"></activity>
+        <activity android:name=".AddressList"></activity>
     </application>
 <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
