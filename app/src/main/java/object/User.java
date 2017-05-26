@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import listview.Address;
 
 /**
- * Created by Administrator on 2017/5/25.
+ * Created by Administrator  on 2017/5/25.
  */
 public class User {
     private String username = null;
