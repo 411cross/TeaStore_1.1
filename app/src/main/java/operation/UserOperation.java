@@ -185,5 +185,24 @@ public class UserOperation {
 
     }
 
+    public static ArrayList DeleteAddress(int addressID) throws JSONException {
+        okHttpTools okhttpT = new okHttpTools();    // 新建HTTP代理
+        JSONObject jObject = new JSONObject();
+        String Authorization = "Bearer " +GeneralOperation.getUser().getToken();
+        jObject.put("Authorization", Authorization);
+        jObject.put("address_id", addressID);
+        String userjson = jObject.toString();       //转换成JSON串
+        String URL = "http://139.199.226.190:8080/api/v1/address/delete";  //请求URL   每个操作都有一个URL
+        try {
+            okhttpT.postTools(URL, userjson,Authorization, 2);      //提交JSON 到服务器
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        ArrayList responseList = okhttpT.getResponse();
+        return responseList;
+    }
+
 
 }
