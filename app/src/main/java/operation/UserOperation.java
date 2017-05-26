@@ -83,7 +83,7 @@ public class UserOperation {
         okHttpTools okht = new okHttpTools();
         String oldToken = user.getToken();
         String tokenJson = GeneralOperation.tokenToJson(oldToken);
-        String URL="http://localhost:8888/api/v1/updateToken";
+        String URL="http://139.199.226.190:8080/api/v1/updateToken";
 
         try {
             okht.postTools(URL,tokenJson, oldToken, 1);

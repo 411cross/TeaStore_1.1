@@ -76,7 +76,7 @@ public class GeneralOperation {
         jObject.put("password", password);
         jObject.put("email", email);
         String userRegJson = jObject.toString();
-        String URL = "http://dawnki.cn:8100/api/v1/register";
+        String URL = "http://139.199.226.190:8080/api/v1/register";
         try {
             okhttpT.postTools(URL, userRegJson, null, 0);
         } catch (ExecutionException e) {
@@ -96,7 +96,7 @@ public class GeneralOperation {
         jObject.put("username", username);
         jObject.put("password", password);
         String userjson = jObject.toString();       //转换成JSON串
-        String URL = "http://dawnki.cn:8100/api/v1/login";  //请求URL   每个操作都有一个URL
+        String URL = "http://139.199.226.190:8080/api/v1/login";  //请求URL   每个操作都有一个URL
         try {
             okhttpT.postTools(URL, userjson, null, 0);      //提交JSON 到服务器
         } catch (ExecutionException e) {
@@ -142,7 +142,7 @@ public class GeneralOperation {
         String Authorization = "Bearer " + user.getToken();
         jObject.put("Authorization", Authorization);
         String userjson = jObject.toString();       //转换成JSON串
-        String URL = "http://dawnki.cn:8100/api/v1/login";  //请求URL   每个操作都有一个URL
+        String URL = "http://139.199.226.190:8080/api/v1/login";  //请求URL   每个操作都有一个URL
         try {
             okhttpT.postTools(URL, userjson, null, 2);      //提交JSON 到服务器
         } catch (ExecutionException e) {
