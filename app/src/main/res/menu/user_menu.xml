@@ -2,6 +2,9 @@
 <menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/CheckCountantMessage"
+        android:title="查看账号信息"/>
+    <item
      android:id="@+id/createAddress"
      android:title="创建收货地址"/>
     <item android:title="查看收货地址"

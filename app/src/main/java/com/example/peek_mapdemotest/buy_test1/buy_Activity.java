@@ -62,12 +62,17 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
             public void onClick(View view) {
                 try {
                     list = GeneralOperation.logout(user);
-//                    if(list.get(0)==){
-//
-//                    }
-//                    else{
-//
-//                    }
+                    if (Integer.parseInt((String) list.get(0)) == 204) {
+                        Toast.makeText(getApplicationContext(),"退出成功",Toast.LENGTH_LONG).show();
+                        Intent intent =new Intent(getApplicationContext(),MainActivity_buy.class);
+                        startActivity(intent);
+//            String Authorization = data.getString("Authorization");
+                    }
+                    else{
+                        JSONObject object = new JSONObject((String)list.get(1));
+                        String message = object.getString("message");
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -206,8 +211,10 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
                 }
 
                 break;
-
-
+            case R.id.CheckCountantMessage:
+                Intent intent = new Intent(getApplicationContext(),AccountMessage.class);
+                startActivity(intent);
+                break;
             default:
                 break;
         }
