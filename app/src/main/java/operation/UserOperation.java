@@ -1,20 +1,15 @@
 package operation;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import listview.Address;
 import object.User;
 import okhttp_tools.okHttpTools;
-
-import static operation.GeneralOperation.user;
 
 /**
  * Created by derrickJ on 2017/5/26.
@@ -252,6 +247,34 @@ public class UserOperation {
         ArrayList responseList = okhttpT.getResponse();
         return responseList;
     }
+
+    /**
+     * ModifyAddress
+     * 修改用户选定地址
+     * int addressID -> ArrayList responseList
+     */
+    public static ArrayList ModifyAddress(int addressID,String consigneeName,String consigneeAddress,String consigneeOphone) throws JSONException {
+        okHttpTools okhttpT = new okHttpTools();    // 新建HTTP代理
+        JSONObject jObject = new JSONObject();
+        String Authorization = "Bearer " + GeneralOperation.getUser().getToken();
+        jObject.put("Authorization", Authorization);
+        jObject.put("address_id", addressID);
+        jObject.put("name", consigneeName);
+        jObject.put("phone", consigneeOphone);
+        jObject.put("content",consigneeAddress);
+        String userjson = jObject.toString();       //转换成JSON串
+        String URL = "http://139.199.226.190:8080/api/v1/address/modify";  //请求URL   每个操作都有一个URL
+        try {
+            okhttpT.postTools(URL, userjson, Authorization, 1);      //提交JSON 到服务器
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        ArrayList responseList = okhttpT.getResponse();
+        return responseList;
+    }
+
 
 
 }
