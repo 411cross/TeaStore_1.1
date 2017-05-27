@@ -21,6 +21,7 @@
         <activity android:name=".goods_detail"></activity>
         <activity android:name=".register"></activity>
         <activity android:name=".AddressList"></activity>
+        <activity android:name=".AccountMessage"></activity>
     </application>
 <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

@@ -54,6 +54,7 @@ public class UserOperation {
         userArrayList.add(3, data.getInt("finish"));
         userArrayList.add(4, data.getInt("score"));
 
+
         return userArrayList;
     }
 
