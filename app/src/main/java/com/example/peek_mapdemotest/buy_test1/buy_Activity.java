@@ -105,7 +105,7 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
 //                Toast.makeText(buy_Activity.this, goods.getGoods_name(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(buy_Activity.this, goods_detail.class);
                 intent.putExtra("detail_name", goods.getGoods_name());
-                intent.putExtra("goods_imageID", goods.getThumb());
+                intent.putExtra("detail_thumb", goods.getThumb());
                 intent.putExtra("detail_price", goods.getPrice());
                 intent.putExtra("detail_description", goods.getDescription());
                 startActivity(intent);
