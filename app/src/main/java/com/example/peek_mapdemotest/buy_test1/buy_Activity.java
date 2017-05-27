@@ -37,7 +37,7 @@ import operation.UserOperation;
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class buy_Activity extends ActionBarActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
-    private List<Goods> goodsList = new ArrayList<Goods>();
+    private ArrayList<Goods> goodsList = new ArrayList<Goods>();
     private TextView welTV;
     private TextView outTV;
     private User user = null;
@@ -78,7 +78,22 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
                 }
             }
         });
-        initGoods();
+
+        try {
+            ArrayList responseList = UserOperation.getGoodsListRes();
+            if (Integer.parseInt((String) responseList.get(0)) != 200) {
+                JSONObject jsonObject = new JSONObject((String) responseList.get(1));
+                String message = jsonObject.getString("message");
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            } else {
+                goodsList = UserOperation.getGoodList(responseList);
+                if (goodsList.size() == 0) {
+                    Toast.makeText(this, "暂无商品", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         GoodsAdapter goodsAdapter = new GoodsAdapter(buy_Activity.this, R.layout.goods_item, goodsList);
         ListView listView1 = (ListView) findViewById(R.id.listView1);
@@ -90,28 +105,11 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
                 Toast.makeText(buy_Activity.this, goods.getGoods_name(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(buy_Activity.this, goods_detail.class);
                 intent.putExtra("goods_name", goods.getGoods_name());
-                intent.putExtra("goods_imageID", goods.getImageId());
+                intent.putExtra("goods_imageID", goods.getThumb());
+                intent.putExtra("price", goods.getPrice());
                 startActivity(intent);
             }
         });
-
-    }
-
-    private void initGoods() {
-        for (int i = 0; i < 2; i++) {
-            Goods goods = new Goods("apple", R.drawable.abc_menu_hardkey_panel_holo_dark);
-            goodsList.add(goods);
-            Goods bbbb = new Goods("bbbb", R.drawable.abc_menu_hardkey_panel_holo_dark);
-            goodsList.add(bbbb);
-            Goods cccc = new Goods("cccc", R.drawable.abc_menu_hardkey_panel_holo_dark);
-            goodsList.add(cccc);
-            Goods dddd = new Goods("dddd", R.drawable.abc_menu_hardkey_panel_holo_dark);
-            goodsList.add(dddd);
-            Goods eeee = new Goods("eeee", R.drawable.abc_menu_hardkey_panel_holo_dark);
-            goodsList.add(eeee);
-
-        }
-
 
     }
 

@@ -32,8 +32,10 @@ public class GoodsAdapter extends ArrayAdapter<Goods>{
         View view = LayoutInflater.from(getContext()).inflate(resource, parent, false);
         ImageView goodsImage = (ImageView) view.findViewById(R.id.goods_image);
         TextView goodsName = (TextView) view.findViewById(R.id.goods_name);
-        goodsImage.setImageResource(Goods.getImageId());
+        TextView price = (TextView) view.findViewById(R.id.price);
+        goodsImage.setImageResource(R.mipmap.test);
         goodsName.setText(Goods.getGoods_name());
+        price.setText(Goods.getPrice());
         return view;
     }
 
