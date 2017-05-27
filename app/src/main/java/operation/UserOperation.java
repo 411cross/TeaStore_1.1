@@ -1,15 +1,21 @@
 package operation;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import listview.Address;
+import listview.Goods;
 import object.User;
 import okhttp_tools.okHttpTools;
+
+import static com.example.peek_mapdemotest.buy_test1.R.id.addressList;
 
 /**
  * Created by derrickJ on 2017/5/26.
@@ -214,7 +220,7 @@ public class UserOperation {
                 addressList.add(i, address);
             }
             user.setAddressList(addressList);
-        } catch (JSONException e){
+        } catch (JSONException e) {
             user.setAddressList(addressList);
         }
 
@@ -253,7 +259,7 @@ public class UserOperation {
      * 修改用户选定地址
      * int addressID -> ArrayList responseList
      */
-    public static ArrayList ModifyAddress(int addressID,String consigneeName,String consigneeAddress,String consigneeOphone) throws JSONException {
+    public static ArrayList ModifyAddress(int addressID, String consigneeName, String consigneeAddress, String consigneeOphone) throws JSONException {
         okHttpTools okhttpT = new okHttpTools();    // 新建HTTP代理
         JSONObject jObject = new JSONObject();
         String Authorization = "Bearer " + GeneralOperation.getUser().getToken();
@@ -261,7 +267,7 @@ public class UserOperation {
         jObject.put("address_id", addressID);
         jObject.put("name", consigneeName);
         jObject.put("phone", consigneeOphone);
-        jObject.put("content",consigneeAddress);
+        jObject.put("content", consigneeAddress);
         String userjson = jObject.toString();       //转换成JSON串
         String URL = "http://139.199.226.190:8080/api/v1/address/modify";  //请求URL   每个操作都有一个URL
         try {
@@ -275,6 +281,62 @@ public class UserOperation {
         return responseList;
     }
 
+    public static ArrayList getGoodsListRes() throws JSONException {
+
+        okHttpTools okhttpT = new okHttpTools();
+        JSONObject jsonObject = new JSONObject();
+        String Authorization = "Bearer " + GeneralOperation.getUser().getToken();
+        jsonObject.put("Authorization", Authorization);
+        jsonObject.put("store_id", 3);
+        String json = jsonObject.toString();
+        String URL = "http://139.199.226.190:8080/api/v1/shop/getGoodsListByStore?store_id=3";
+
+        try {
+            okhttpT.postTools(URL, json, Authorization, 3);      //提交JSON 到服务器
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList responseList = okhttpT.getResponse();
+        return responseList;
+
+    }
+
+    public static ArrayList getGoodList(ArrayList responseList) throws JSONException {
+
+        ArrayList<Goods> goodsList = new ArrayList<Goods>();
+        String data = (String) responseList.get(1);
+        JSONObject object = new JSONObject(data);
+
+        try {
+            JSONArray jsonArray = object.getJSONArray("data");
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject goodsData = (JSONObject) jsonArray.get(i);
+                Log.i("我噢噢", goodsData.toString());
+                int goods_id = goodsData.getInt("goods_id");
+                int store_id = goodsData.getInt("store_id");
+//                int class_id = goodsData.getInt("class_id");
+                String name = goodsData.getString("name");
+                String description = goodsData.getString("description");
+                Log.i("我噢噢1", description);
+                String price = goodsData.getString("price");
+                int stock = goodsData.getInt("stock");
+                int sold_amount = goodsData.getInt("sold_amount");
+                String thumb = goodsData.getString("thumb");
+                Goods good = new Goods(goods_id, store_id, 1, name, description, price, stock, sold_amount, thumb);
+                goodsList.add(i, good);
+            }
+
+        } catch (JSONException e) {
+
+        }
+
+        return goodsList;
+
+    }
 
 
 }
