@@ -194,10 +194,12 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
                         String message = jsonObject.getString("message");
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                     } else {
-
-                        Toast.makeText(this, "查看收货地址", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(buy_Activity.this, AddressList.class);
-                        startActivity(intent);
+                        if (user.getAddressList().size() == 0) {
+                            Toast.makeText(this, "无收货地址", Toast.LENGTH_SHORT).show();
+                        } else {
+                            startActivity(intent);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

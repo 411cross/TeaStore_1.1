@@ -1,5 +1,7 @@
 package operation;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -203,19 +205,23 @@ public class UserOperation {
         ArrayList responseList = okht.getResponse();
         String data = (String) responseList.get(1);
         JSONObject object = new JSONObject(data);
-        JSONArray jsonArray = object.getJSONArray("data");
+        try {
+            JSONArray jsonArray = object.getJSONArray("data");
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject addressData = (JSONObject) jsonArray.get(i);
-            int address_id = addressData.getInt("address_id");
-            int userId = addressData.getInt("userId");
-            String phone = addressData.getString("phone");
-            String name = addressData.getString("name");
-            String content = addressData.getString("content");
-            Address address = new Address(address_id, userId, phone, name, content);
-            addressList.add(i, address);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject addressData = (JSONObject) jsonArray.get(i);
+                int address_id = addressData.getInt("address_id");
+                int userId = addressData.getInt("userId");
+                String phone = addressData.getString("phone");
+                String name = addressData.getString("name");
+                String content = addressData.getString("content");
+                Address address = new Address(address_id, userId, phone, name, content);
+                addressList.add(i, address);
+            }
+            user.setAddressList(addressList);
+        } catch (JSONException e){
+            user.setAddressList(addressList);
         }
-        user.setAddressList(addressList);
 
         return responseList;
 
@@ -231,13 +237,13 @@ public class UserOperation {
     public static ArrayList DeleteAddress(int addressID) throws JSONException {
         okHttpTools okhttpT = new okHttpTools();    // 新建HTTP代理
         JSONObject jObject = new JSONObject();
-        String Authorization = "Bearer " +GeneralOperation.getUser().getToken();
+        String Authorization = "Bearer " + GeneralOperation.getUser().getToken();
         jObject.put("Authorization", Authorization);
         jObject.put("address_id", addressID);
         String userjson = jObject.toString();       //转换成JSON串
         String URL = "http://139.199.226.190:8080/api/v1/address/delete";  //请求URL   每个操作都有一个URL
         try {
-            okhttpT.postTools(URL, userjson,Authorization, 2);      //提交JSON 到服务器
+            okhttpT.postTools(URL, userjson, Authorization, 2);      //提交JSON 到服务器
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -246,8 +252,6 @@ public class UserOperation {
         ArrayList responseList = okhttpT.getResponse();
         return responseList;
     }
-
-
 
 
 }
