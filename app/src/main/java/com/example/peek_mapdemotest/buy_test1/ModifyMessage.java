@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import operation.Base64Tool;
 import operation.GeneralOperation;
 
 /**
@@ -109,8 +111,7 @@ public class ModifyMessage extends ActionBarActivity {
         if (requestCode == PHOTO_REQUEST_GALLERY) {
             if (data != null) {
                  Uri uri = data.getData();
-                Log.i("data111", data.getData().getPath());
-                Log.e("图片路径？？", data.getData() + "");
+
                 crop(uri);
 
             }
@@ -140,6 +141,7 @@ public class ModifyMessage extends ActionBarActivity {
                     // final byte[] buffer = out.toByteArray();
                     // outputStream.write(buffer);
                     outputStream = ModifyMessage.this.openFileOutput("_head_icon.jpg", Context.MODE_PRIVATE);
+//                    Log.i("checkinfo", Base64Tool.imageToBase(getApplicationContext().getFilesDir().getAbsolutePath() + "/_head_icon.jpg"));
                     out.writeTo(outputStream);
                     out.close();
                     outputStream.close();

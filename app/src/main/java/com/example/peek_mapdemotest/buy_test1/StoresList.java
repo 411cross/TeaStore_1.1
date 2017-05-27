@@ -145,7 +145,6 @@ public class StoresList extends ActionBarActivity implements View.OnClickListene
         switch (menuItem.getItemId()) {
             case R.id.createAddress:
 
-
                 LayoutInflater layoutInflater = LayoutInflater.from(this);
                 final View myLoginView = layoutInflater.inflate(R.layout.user_address, null);
                 Dialog alertDialog = new AlertDialog.Builder(this).
