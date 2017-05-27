@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -24,48 +25,40 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 
+import listview.Address;
+import listview.AddressAdapter;
 import listview.Goods;
 import listview.GoodsAdapter;
+import listview.Store;
+import listview.StoreAdapter;
 import object.User;
 import operation.GeneralOperation;
 import operation.UserOperation;
 
-/**
- * Created by Administrator on 2017/5/24.
- */
+
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class buy_Activity extends ActionBarActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
-    private ArrayList<Goods> goodsList = new ArrayList<Goods>();
+public class StoresList extends ActionBarActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, AdapterView.OnItemLongClickListener {
+
+    private ArrayList<Store> storesList = new ArrayList<Store>();
     private TextView welTV;
     private TextView outTV;
     private User user = null;
     public ArrayList list = new ArrayList();
 
-    public buy_Activity() {
+    public StoresList() {
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.buy_content);
-
-        Intent intent = new Intent();
-        Bundle bundle=this.getIntent().getExtras();
-        int store_id = bundle.getInt("store_id");
-        Log.i("确认商铺id", String.valueOf(store_id));
+        setContentView(R.layout.store_list);
 
         welTV = (TextView) findViewById(R.id.welcomeTV);
         outTV = (TextView) findViewById(R.id.outTV);
         user = GeneralOperation.getUser();
-        if(user.getName().equals("null")){
-            welTV.setText(user.getUsername() + " 欢迎你！");
-        }
-        else{
-            welTV.setText(user.getName()+" 欢迎你！");
-        }
+        welTV.setText(user.getUsername() + "欢迎你！");
         welTV.setOnClickListener(this);
         outTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,13 +66,12 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
                 try {
                     list = GeneralOperation.logout(user);
                     if (Integer.parseInt((String) list.get(0)) == 204) {
-                        Toast.makeText(getApplicationContext(),"退出成功",Toast.LENGTH_LONG).show();
-                        Intent intent =new Intent(getApplicationContext(),MainActivity_buy.class);
+                        Toast.makeText(getApplicationContext(), "退出成功", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity_buy.class);
                         startActivity(intent);
 //            String Authorization = data.getString("Authorization");
-                    }
-                    else{
-                        JSONObject object = new JSONObject((String)list.get(1));
+                    } else {
+                        JSONObject object = new JSONObject((String) list.get(1));
                         String message = object.getString("message");
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                     }
@@ -90,44 +82,56 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
         });
 
         try {
-            ArrayList responseList = UserOperation.getGoodsListRes(store_id);
+            ArrayList responseList = UserOperation.getStoreListRes();
             if (Integer.parseInt((String) responseList.get(0)) != 200) {
                 JSONObject jsonObject = new JSONObject((String) responseList.get(1));
                 String message = jsonObject.getString("message");
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             } else {
-                goodsList = UserOperation.getGoodList(responseList);
-                if (goodsList.size() == 0) {
-                    Toast.makeText(this, "暂无商品", Toast.LENGTH_SHORT).show();
+                storesList = UserOperation.getStoreList(responseList);
+                if (storesList.size() == 0) {
+                    Toast.makeText(this, "暂无商铺", Toast.LENGTH_SHORT).show();
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        GoodsAdapter goodsAdapter = new GoodsAdapter(buy_Activity.this, R.layout.goods_item, goodsList);
-        ListView listView1 = (ListView) findViewById(R.id.listView1);
-        listView1.setAdapter(goodsAdapter);
-        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        StoreAdapter storesAdapter = new StoreAdapter(StoresList.this, R.layout.stores_item, storesList);
+        ListView storeListView = (ListView) findViewById(R.id.store_list);
+        storeListView.setAdapter(storesAdapter);
+        storeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Goods goods = goodsList.get(i);
+                Store stores = storesList.get(i);
 //                Toast.makeText(buy_Activity.this, goods.getGoods_name(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(buy_Activity.this, goods_detail.class);
-                intent.putExtra("detail_name", goods.getGoods_name());
-                intent.putExtra("detail_thumb", goods.getThumb());
-                intent.putExtra("detail_price", goods.getPrice());
-                intent.putExtra("detail_description", goods.getDescription());
+                Bundle bundle = new Bundle();
+                bundle.putInt("store_id", stores.getStore_id());
+                Intent intent = new Intent(StoresList.this, buy_Activity.class);
+                intent.putExtras(bundle);
+//                intent.putExtra("store_description", stores.getDescription());
                 startActivity(intent);
             }
         });
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i("TAG1", "onRestart: ");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("TAG2", "onStart: ");
+    }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onClick(View view) {
-//
+
         PopupMenu popup = new PopupMenu(this, view);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.user_menu, popup.getMenu());
@@ -182,22 +186,6 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
                         }).
                         create();
                 alertDialog.show();
-//                final TextView  TV1 = new TextView(this);
-//                TV1.setText("收货人：");
-//                final EditText inputServer = new EditText(this);
-//                final TextView  TV2 = new TextView(this);
-//                TV1.setText("收货地址：");
-//                final EditText inputServer1 = new EditText(this);
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setTitle("创建收货地址").setIcon(android.R.drawable.ic_dialog_info).setView(TV1).setView(inputServer).setView(TV2).setView(inputServer1)
-//                        .setNegativeButton("Cancel", null);
-//                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        inputServer.getText().toString();
-//                    }
-//                });
-//                builder.show();
                 Toast.makeText(this, "创建收货地址", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.checkAddress:
@@ -208,7 +196,7 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
                         String message = jsonObject.getString("message");
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                     } else {
-                        Intent intent = new Intent(buy_Activity.this, AddressList.class);
+                        Intent intent = new Intent(StoresList.this, AddressList.class);
                         if (user.getAddressList().size() == 0) {
                             Toast.makeText(this, "无收货地址", Toast.LENGTH_SHORT).show();
                         } else {
@@ -229,4 +217,12 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
         }
         return false;
     }
+
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+        return false;
+    }
+
+
 }

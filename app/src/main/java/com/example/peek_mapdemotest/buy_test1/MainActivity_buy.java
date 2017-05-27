@@ -58,7 +58,7 @@ public class MainActivity_buy extends ActionBarActivity {
                         Toast.makeText(MainActivity_buy.this, message, Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(MainActivity_buy.this, "登录成功！", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(MainActivity_buy.this, buy_Activity.class);
+                        Intent intent = new Intent(MainActivity_buy.this, StoresList.class);
                         startActivity(intent);
 
                     }
