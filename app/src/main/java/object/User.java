@@ -14,6 +14,7 @@ public class User {
     private String token = null;
     private int userId;
     private ArrayList<Address> addressList;
+    private Address selectedAddress;
 
 
     public User() {
@@ -73,5 +74,14 @@ public class User {
 
     public void setAddressList(ArrayList<Address> addressList) {
         this.addressList = addressList;
+    }
+
+
+    public Address getSelectedAddress() {
+        return selectedAddress;
+    }
+
+    public void setSelectedAddress(Address selectedAddress) {
+        this.selectedAddress = selectedAddress;
     }
 }
