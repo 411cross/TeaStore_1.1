@@ -12,6 +12,8 @@ import com.example.peek_mapdemotest.buy_test1.R;
 
 import java.util.List;
 
+import operation.GetImage;
+
 /**
  * Created by Administrator on 2017/5/23.
  */
@@ -33,7 +35,9 @@ public class GoodsAdapter extends ArrayAdapter<Goods>{
         ImageView goodsImage = (ImageView) view.findViewById(R.id.goods_image);
         TextView goodsName = (TextView) view.findViewById(R.id.goods_name);
         TextView price = (TextView) view.findViewById(R.id.price);
-        goodsImage.setImageResource(R.mipmap.test);
+
+        String imageURL = "http://" + Goods.getThumb();
+        new GetImage(goodsImage, imageURL).execute();
         goodsName.setText(Goods.getGoods_name());
         price.setText(Goods.getPrice());
         return view;

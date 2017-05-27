@@ -21,14 +21,13 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/goods_image"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="21dp"
-        android:layout_marginStart="21dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:layout_toEndOf="@+id/goods_image"
         android:layout_toRightOf="@+id/goods_image"
         android:text="price"
         android:textColor="@android:color/holo_orange_dark"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/goods_name"
@@ -40,8 +39,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginTop="16dp"
         android:text="goods_name"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textSize="18sp" />
 
 
 </RelativeLayout>

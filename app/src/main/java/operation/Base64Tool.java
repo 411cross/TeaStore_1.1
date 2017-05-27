@@ -1,10 +1,16 @@
 package operation;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import Decoder.BASE64Decoder;
 import Decoder.BASE64Encoder;
@@ -63,4 +69,6 @@ public class Base64Tool {
             return imagePath;
 
     }
+
+
 }

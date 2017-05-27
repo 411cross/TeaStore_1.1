@@ -1,26 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
  <ImageView
-     android:layout_width="match_parent"
+     android:layout_width="300dp"
      android:layout_height="300dp"
-     android:id="@+id/img1"/>
+     android:id="@+id/detail_thumb"
+     android:layout_alignParentTop="true"
+     android:layout_centerHorizontal="true"
+     android:layout_marginTop="28dp" />
 
     <TextView
+        android:id="@+id/detail_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv1"
-        android:text="商品名."/>
+        android:layout_above="@+id/detail_price"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:text="商品名"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
     <TextView
+        android:id="@+id/detail_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv2"
-        android:text="详情."/>
-    <Button
-        android:layout_width="match_parent"
+        android:layout_above="@+id/detail_description"
+        android:layout_alignLeft="@+id/detail_description"
+        android:layout_alignStart="@+id/detail_description"
+        android:layout_marginBottom="16dp"
+        android:text="价格"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/detail_description"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button1"/>
-</LinearLayout>
+        android:layout_marginBottom="20dp"
+        android:text="详情"
+        android:textSize="16sp"
+        android:layout_above="@+id/button1"
+        android:layout_alignLeft="@+id/detail_name"
+        android:layout_alignStart="@+id/detail_name" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@android:color/holo_orange_dark"
+        android:text="购    买"
+        android:textColor="@android:color/background_light"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+</RelativeLayout>
