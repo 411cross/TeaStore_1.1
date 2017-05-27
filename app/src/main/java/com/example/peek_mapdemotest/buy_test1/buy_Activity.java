@@ -24,7 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import listview.Goods;
 import listview.GoodsAdapter;
@@ -55,7 +54,12 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
         welTV = (TextView) findViewById(R.id.welcomeTV);
         outTV = (TextView) findViewById(R.id.outTV);
         user = GeneralOperation.getUser();
-        welTV.setText(user.getUsername() + "欢迎你！");
+        if(user.getName().equals("null")){
+            welTV.setText(user.getUsername() + " 欢迎你！");
+        }
+        else{
+            welTV.setText(user.getName()+" 欢迎你！");
+        }
         welTV.setOnClickListener(this);
         outTV.setOnClickListener(new View.OnClickListener() {
             @Override

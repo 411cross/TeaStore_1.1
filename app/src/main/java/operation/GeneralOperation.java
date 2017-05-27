@@ -113,11 +113,14 @@ public class GeneralOperation {
             JSONObject data = object.getJSONObject("data");
             String token = data.getString("token");
             int userId = data.getInt("userId");
+            String name = data.getString("name");
+            Log.i("name", name);
             Log.i("TOKEN", token);
             String email = data.getString("email");
             user = new User(username, password, email);
             user.setToken(token);
             user.setUserId(userId);
+            user.setName(name);
         }
         return responseList;
     }

@@ -15,6 +15,7 @@ public class User {
     private int userId;
     private ArrayList<Address> addressList;
     private Address selectedAddress;
+    private String name =null;
 
 
     public User() {
@@ -83,5 +84,13 @@ public class User {
 
     public void setSelectedAddress(Address selectedAddress) {
         this.selectedAddress = selectedAddress;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
