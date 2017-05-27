@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import operation.Base64Tool;
 import operation.GeneralOperation;
 
 /**
@@ -109,6 +110,15 @@ public class ModifyMessage extends ActionBarActivity {
         if (requestCode == PHOTO_REQUEST_GALLERY) {
             if (data != null) {
                  Uri uri = data.getData();
+                Log.i("Base64", Base64Tool.imageToBase(uri.getPath()));
+//                try {
+//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+//                    headIconImage.setImageBitmap(bitmap);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+
                 Log.i("data111", data.getData().getPath());
                 Log.e("图片路径？？", data.getData() + "");
                 crop(uri);
@@ -127,7 +137,9 @@ public class ModifyMessage extends ActionBarActivity {
 
         } else if (requestCode == PHOTO_REQUEST_CUT) {
             if (data != null) {
+//                Bundle extras = data.getExtras();
                 final Bitmap bitmap = data.getParcelableExtra("data");
+//                final Bitmap bitmap = extras.getParcelable("data");
                 headIconImage.setImageBitmap(bitmap);
 
                 // 保存图片到internal storage
@@ -143,6 +155,9 @@ public class ModifyMessage extends ActionBarActivity {
                     out.writeTo(outputStream);
                     out.close();
                     outputStream.close();
+                    Log.i("Base64", Base64Tool.imageToBase(Environment.getExternalStorageDirectory().getPath() + "/temp_photo.jpg"));
+
+
 
 //                    Log.i("tofilepath", ModifyMessage.getRealFilePath(getApplicationContext(), data.getData()));
 
@@ -154,8 +169,8 @@ public class ModifyMessage extends ActionBarActivity {
                 }
             }
             try {
-                if (tempFile != null && tempFile.exists())
-                    tempFile.delete();
+//                if (tempFile != null && tempFile.exists())
+//                    tempFile.delete();
             } catch (Exception e) {
                 e.printStackTrace();
             }
