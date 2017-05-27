@@ -7,15 +7,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import listview.Address;
 import listview.Goods;
 import object.User;
 import okhttp_tools.okHttpTools;
-
-import static com.example.peek_mapdemotest.buy_test1.R.id.addressList;
 
 /**
  * Created by derrickJ on 2017/5/26.
@@ -174,7 +171,10 @@ public class UserOperation {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        ArrayList responseList = okhttpT.getResponse();//接受响应responseList    get(0)：状态码  get（1）：整个内容。
+        ArrayList responseList = okhttpT.getResponse();
+        UserOperation.getAddress();
+
+        //接受响应responseList    get(0)：状态码  get（1）：整个内容。
 //        if (Integer.parseInt((String) okhttpT.getResponse().get(0)) == 201) {
 //            JSONObject object = new JSONObject((String) okhttpT.getResponse().get(1));
 //
@@ -221,6 +221,7 @@ public class UserOperation {
                 addressList.add(i, address);
             }
             user.setAddressList(addressList);
+            GeneralOperation.updateUser(user);
         } catch (JSONException e) {
             user.setAddressList(addressList);
         }
@@ -251,6 +252,7 @@ public class UserOperation {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        UserOperation.getAddress();
         ArrayList responseList = okhttpT.getResponse();
         return responseList;
     }
@@ -279,6 +281,7 @@ public class UserOperation {
             e.printStackTrace();
         }
         ArrayList responseList = okhttpT.getResponse();
+        UserOperation.getAddress();
         return responseList;
     }
 

@@ -141,8 +141,8 @@ public class GeneralOperation {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public static void setUser(User user1) {
+        user = user1;
     }
 
     public static ArrayList logout(User user) throws JSONException {
@@ -164,5 +164,7 @@ public class GeneralOperation {
         return responseList;
     }
 
-
+  public static void updateUser(User user1){
+      user=user1;
+  }
 }

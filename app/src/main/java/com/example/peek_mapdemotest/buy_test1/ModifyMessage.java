@@ -1,9 +1,11 @@
 package com.example.peek_mapdemotest.buy_test1;
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +22,8 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+
+import operation.GeneralOperation;
 
 /**
  * Created by Administrator on 2017/5/27.
@@ -43,8 +47,19 @@ public class ModifyMessage extends ActionBarActivity {
         setContentView(R.layout.modify_account_message);
         headIconImage= (ImageView) findViewById(R.id.person_headIcon);
         modifyNameET= (EditText) findViewById(R.id.modify_name);
+        if(GeneralOperation.getUser().getName().equals("null")){
+
+        }else{
+            modifyNameET.setText(GeneralOperation.getUser().getName());
+        }
         changeHeadIconButton= (Button) findViewById(R.id.changeHeadButton);
         submitButton= (Button) findViewById(R.id.submitButton);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                UserOperation.modifyUserInfo(GeneralOperation.getUser(),modifyNameET.getText(),imagebianma);
+            }
+        });
 
 
         changeHeadIconButton.setOnClickListener(new View.OnClickListener() {
@@ -89,11 +104,12 @@ public class ModifyMessage extends ActionBarActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PHOTO_REQUEST_GALLERY) {
             if (data != null) {
-                Uri uri = data.getData();
+                 Uri uri = data.getData();
+                Log.i("data111", data.getData().getPath());
                 Log.e("图片路径？？", data.getData() + "");
                 crop(uri);
 
@@ -127,6 +143,12 @@ public class ModifyMessage extends ActionBarActivity {
                     out.writeTo(outputStream);
                     out.close();
                     outputStream.close();
+
+//                    Log.i("tofilepath", ModifyMessage.getRealFilePath(getApplicationContext(), data.getData()));
+
+//                    String image64=Base64Tool.imageToBase());
+//                    Toast.makeText(getApplicationContext(),image64,Toast.LENGTH_LONG).show();
+//                    Log.i("image64", image64);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -154,4 +176,31 @@ public class ModifyMessage extends ActionBarActivity {
         intent.putExtra("return-data", true);
         startActivityForResult(intent, PHOTO_REQUEST_CUT);
     }
+
+    public static String getRealFilePath( final Context context, final Uri uri ) {
+        if ( null == uri ) return null;
+        final String scheme = uri.getScheme();
+        String data = null;
+        if ( scheme == null )
+            data = uri.getPath();
+        else if ( ContentResolver.SCHEME_FILE.equals( scheme ) ) {
+            data = uri.getPath();
+        } else if ( ContentResolver.SCHEME_CONTENT.equals( scheme ) ) {
+            Cursor cursor = context.getContentResolver().query( uri, new String[] { MediaStore.Images.ImageColumns.DATA }, null, null, null );
+            if ( null != cursor ) {
+                if ( cursor.moveToFirst() ) {
+                    int index = cursor.getColumnIndex( MediaStore.Images.ImageColumns.DATA );
+                    if ( index > -1 ) {
+                        data = cursor.getString( index );
+                    }
+                }
+                cursor.close();
+            }
+        }
+        return data;
+    }
+
+
+
+
 }
