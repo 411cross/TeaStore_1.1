@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutionException;
 
 import listview.Address;
 import listview.Goods;
+import listview.Store;
 import object.User;
 import okhttp_tools.okHttpTools;
 
@@ -285,15 +286,21 @@ public class UserOperation {
         return responseList;
     }
 
-    public static ArrayList getGoodsListRes() throws JSONException {
+
+    /**
+     * getGoodListRes
+     * 获取指定商铺的商品列表的整个 response
+     * -> ArrayList responseList
+     */
+    public static ArrayList getGoodsListRes(int store_id) throws JSONException {
 
         okHttpTools okhttpT = new okHttpTools();
         JSONObject jsonObject = new JSONObject();
         String Authorization = "Bearer " + GeneralOperation.getUser().getToken();
         jsonObject.put("Authorization", Authorization);
-        jsonObject.put("store_id", 3);
+        jsonObject.put("store_id", store_id);
         String json = jsonObject.toString();
-        String URL = "http://139.199.226.190:8080/api/v1/shop/getGoodsListByStore?store_id=3";
+        String URL = "http://139.199.226.190:8080/api/v1/shop/getGoodsListByStore?store_id=" + store_id;
 
         try {
             okhttpT.postTools(URL, json, Authorization, 3);      //提交JSON 到服务器
@@ -308,6 +315,12 @@ public class UserOperation {
 
     }
 
+
+    /**
+     * getGoodList
+     * 获取指定商铺的商品列表
+     * ArrayList responseList -> ArrayList<Goods> goodsList
+     */
     public static ArrayList getGoodList(ArrayList responseList) throws JSONException {
 
         ArrayList<Goods> goodsList = new ArrayList<Goods>();
@@ -319,13 +332,11 @@ public class UserOperation {
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject goodsData = (JSONObject) jsonArray.get(i);
-                Log.i("我噢噢", goodsData.toString());
                 int goods_id = goodsData.getInt("goods_id");
                 int store_id = goodsData.getInt("store_id");
 //                int class_id = goodsData.getInt("class_id");
                 String name = goodsData.getString("name");
                 String description = goodsData.getString("description");
-                Log.i("我噢噢1", description);
                 String price = goodsData.getString("price");
                 int stock = goodsData.getInt("stock");
                 int sold_amount = goodsData.getInt("sold_amount");
@@ -341,6 +352,69 @@ public class UserOperation {
         return goodsList;
 
     }
+
+    /**
+     * getStoreListRes
+     * 获取商铺列表的整个 response
+     * -> ArrayList responseList
+     */
+    public static ArrayList getStoreListRes() throws JSONException {
+
+        okHttpTools okhttpT = new okHttpTools();
+        JSONObject jsonObject = new JSONObject();
+        String Authorization = "Bearer " + GeneralOperation.getUser().getToken();
+        jsonObject.put("Authorization", Authorization);
+        String json = jsonObject.toString();
+
+        String URL = "http://139.199.226.190:8080/api/v1/shop/getStoreList";
+        try {
+            okhttpT.postTools(URL, json, Authorization, 3);      //提交JSON 到服务器
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList responseList = okhttpT.getResponse();
+        return responseList;
+
+    }
+
+    /**
+     * getStoreList
+     * 获取指定商铺的商品列表
+     * ArrayList responseList -> ArrayList<Goods> goodsList
+     */
+    public static ArrayList getStoreList(ArrayList responseList) throws JSONException {
+
+        ArrayList<Store> storesList = new ArrayList<Store>();
+        String data = (String) responseList.get(1);
+        JSONObject object = new JSONObject(data);
+
+        try {
+            JSONArray jsonArray = object.getJSONArray("data");
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject storesData = (JSONObject) jsonArray.get(i);
+                int store_id = storesData.getInt("store_id");
+                int agent_id = storesData.getInt("agent_id");
+                String name = storesData.getString("name");
+                String address = storesData.getString("address");
+                String phone = storesData.getString("phone");
+                String description = storesData.getString("description");
+                Store store = new Store(store_id, agent_id, name, address, phone, description);
+                storesList.add(i, store);
+            }
+
+        } catch (JSONException e) {
+
+        }
+
+        return storesList;
+
+    }
+
+
 
 
 }

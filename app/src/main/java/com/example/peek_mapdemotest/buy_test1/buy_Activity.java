@@ -24,6 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 import listview.Goods;
 import listview.GoodsAdapter;
@@ -50,6 +52,10 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buy_content);
 
+        Intent intent = new Intent();
+        Bundle bundle=this.getIntent().getExtras();
+        int store_id = bundle.getInt("store_id");
+        Log.i("确认商铺id", String.valueOf(store_id));
 
         welTV = (TextView) findViewById(R.id.welcomeTV);
         outTV = (TextView) findViewById(R.id.outTV);
@@ -84,7 +90,7 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
         });
 
         try {
-            ArrayList responseList = UserOperation.getGoodsListRes();
+            ArrayList responseList = UserOperation.getGoodsListRes(store_id);
             if (Integer.parseInt((String) responseList.get(0)) != 200) {
                 JSONObject jsonObject = new JSONObject((String) responseList.get(1));
                 String message = jsonObject.getString("message");
