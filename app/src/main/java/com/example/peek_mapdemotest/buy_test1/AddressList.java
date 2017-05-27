@@ -3,14 +3,17 @@ package com.example.peek_mapdemotest.buy_test1;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -52,20 +55,28 @@ public class AddressList extends ActionBarActivity implements View.OnClickListen
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Address address = addressList.get(i);
-
-                Toast.makeText(AddressList.this, String.valueOf(address.getAddress_id()), Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(AddressList.this, goods_detail.class);
-//                intent.putExtra("address_id", address.getAddress_id());
-//                intent.putExtra("address_name", address.getName());
-//                intent.putExtra("address_phone", address.getPhone());
-//                intent.putExtra("address_content", address.getContent());
-//                startActivity(intent);
+                //String.valueOf(address.getAddress_id())
+//                Toast.makeText(AddressList.this, "已地址:"+address.getContent(), Toast.LENGTH_SHORT).show();
+                GeneralOperation.user.setSelectedAddress(address);
+                finish();
 
             }
         });
 
         addressListView.setOnItemLongClickListener(this);
 
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i("TAG1", "onRestart: ");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("TAG2", "onStart: ");
     }
 
     @Override
@@ -82,19 +93,62 @@ public class AddressList extends ActionBarActivity implements View.OnClickListen
 
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
-        Address address =addressList.get(i);
+        final LayoutInflater layoutInflater = LayoutInflater.from(this);
+        final Address address =addressList.get(i);
         final int addID = address.getAddress_id();
         final View myLongClickView = layoutInflater.inflate(R.layout.useraddress_longclick, null);
         Dialog alertDialog = new AlertDialog.Builder(this).
                 setView(myLongClickView).create();
         alertDialog.show();
+
         Button button1 = (Button) myLongClickView.findViewById(R.id.modifyButton);
         Button button2 = (Button) myLongClickView.findViewById(R.id.deleteButton);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final View myModifyClickView = layoutInflater.inflate(R.layout.modify_address, null);
                 //修改对话框
+               final EditText ED1 = (EditText) myModifyClickView.findViewById(R.id.modify_name_ET);
+                ED1.setText(address.getName());
+                final  EditText ED2 = (EditText) myModifyClickView.findViewById(R.id.modify_address_ET);
+                ED2.setText(address.getContent());
+                final EditText ED3 = (EditText) myModifyClickView.findViewById(R.id.modify_phon_ET);
+                ED3.setText(address.getPhone());
+                Dialog alertDialog = new AlertDialog.Builder(AddressList.this).
+                        setTitle("修改收货地址").setView(myModifyClickView).
+                        setIcon(android.R.drawable.ic_dialog_info).
+                        setPositiveButton("提交", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // TODO Auto-generated method stub
+
+                                Log.i("modify111", ED1.getText().toString());
+                                Log.i("modify122", ED2.getText().toString());
+//                                try {
+//                                    ArrayList list1;
+//                                    list1 = UserOperation.CreateAddress(GeneralOperation.getUser(), ED1.getText().toString(), ED3.getText().toString(), ED2.getText().toString());
+//                                    if (Integer.parseInt((String) list1.get(0)) != 201) {
+//                                        JSONObject object = new JSONObject((String) list1.get(1));
+//                                        String message = object.getString("message");
+//                                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+//                                    } else {
+//                                        Toast.makeText(getApplicationContext(), "创建成功！", Toast.LENGTH_SHORT).show();
+//                                    }
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//
+                            }
+                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub
+                    }
+                }).
+                create();
+        alertDialog.show();
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
@@ -107,9 +161,12 @@ public class AddressList extends ActionBarActivity implements View.OnClickListen
                         JSONObject object = new JSONObject((String)list.get(1));
                         String message = object.getString("message");
                         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                     else{
-                        Toast.makeText(getApplicationContext(),"删除成功！",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "删除成功！", Toast.LENGTH_SHORT).show();
+                        GeneralOperation.getUser().setAddressList(UserOperation.getAddress());
+                        finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -120,4 +177,7 @@ public class AddressList extends ActionBarActivity implements View.OnClickListen
         });
         return false;
     }
+
+
+
 }
