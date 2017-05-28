@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -26,10 +25,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import listview.Address;
-import listview.AddressAdapter;
-import listview.Goods;
-import listview.GoodsAdapter;
 import listview.Store;
 import listview.StoreAdapter;
 import object.User;
@@ -58,7 +53,12 @@ public class StoresList extends ActionBarActivity implements View.OnClickListene
         welTV = (TextView) findViewById(R.id.welcomeTV);
         outTV = (TextView) findViewById(R.id.outTV);
         user = GeneralOperation.getUser();
-        welTV.setText(user.getUsername() + "欢迎你！");
+        if(user.getName().equals("null")){
+            welTV.setText(user.getUsername() + " 欢迎你！");
+        }
+        else{
+            welTV.setText(user.getName()+" 欢迎你！");
+        }
         welTV.setOnClickListener(this);
         outTV.setOnClickListener(new View.OnClickListener() {
             @Override
