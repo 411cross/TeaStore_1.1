@@ -25,13 +25,24 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical"
+    >
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="编辑个人信息"
         android:id="@+id/bianji_button"
         />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="修改密码"
+        android:id="@+id/modifyPassword_button"
+        />
 </LinearLayout>
+
+
 
 </LinearLayout>

@@ -24,8 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 
 import listview.Goods;
 import listview.GoodsAdapter;
@@ -73,8 +71,11 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
                 try {
                     list = GeneralOperation.logout(user);
                     if (Integer.parseInt((String) list.get(0)) == 204) {
-                        Toast.makeText(getApplicationContext(),"退出成功",Toast.LENGTH_LONG).show();
-                        Intent intent =new Intent(getApplicationContext(),MainActivity_buy.class);
+//                        Toast.makeText(getApplicationContext(),"退出成功",Toast.LENGTH_LONG).show();
+//                        Intent intent =new Intent(getApplicationContext(),MainActivity_buy.class);
+//                        startActivity(intent);
+                        final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
 //            String Authorization = data.getString("Authorization");
                     }
