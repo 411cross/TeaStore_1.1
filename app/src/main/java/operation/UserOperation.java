@@ -425,7 +425,7 @@ public class UserOperation {
         JSONObject jObject = new JSONObject();
         String Authorization = "Bearer " + GeneralOperation.getUser().getToken();
         jObject.put("Authorization", Authorization);
-        jObject.put("newpass", newPass);
+        jObject.put("newPass", newPass);
         String userjson = jObject.toString();       //转换成JSON串
         String URL = "http://139.199.226.190:8080/api/v1/setPwd";  //请求URL   每个操作都有一个URL
         try {
