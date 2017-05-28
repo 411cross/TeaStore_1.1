@@ -55,7 +55,7 @@ public class UserOperation {
 
     /**
      * modifyUserInfo
-     * 已登录用户修改地址
+     * 已登录用户信息
      * User user, String name(opt), String imagePath(opt) -> void
      */
     public static void modifyUserInfo(User user, String name, String base64) throws JSONException {
@@ -70,7 +70,7 @@ public class UserOperation {
         jsonObject.put("name", name);
         jsonObject.put("avatar", base64);
         String json = jsonObject.toString();
-        Log.i("TEST JSON", json);
+
 
         try {
             okht.postTools(URL, json, token, 1);
@@ -79,6 +79,8 @@ public class UserOperation {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        GeneralOperation.getUser().setName((String) UserOperation.userInfo(user).get(1));
 
     }
 

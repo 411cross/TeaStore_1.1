@@ -17,13 +17,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".buy_Activity"></activity>
-        <activity android:name=".goods_detail"></activity>
-        <activity android:name=".register"></activity>
-        <activity android:name=".AddressList"></activity>
-        <activity android:name=".AccountMessage"></activity>
+        <activity android:name=".buy_Activity" android:parentActivityName=".StoresList"></activity>
+        <activity android:name=".goods_detail" ></activity>
+        <activity android:name=".register" android:parentActivityName=".MainActivity_buy"></activity>
+        <activity android:name=".AddressList" android:parentActivityName=".StoresList"></activity>
+        <activity android:name=".AccountMessage" android:parentActivityName=".StoresList"></activity>
         <activity android:name=".StoresList"></activity>
-        <activity android:name=".ModifyMessage"></activity>
+        <activity android:name=".ModifyMessage" android:parentActivityName=".AccountMessage"></activity>
     </application>
 <uses-permission android:name="android.permission.INTERNET"/>
     <!--在SDCard中创建与删除文件权限  -->
