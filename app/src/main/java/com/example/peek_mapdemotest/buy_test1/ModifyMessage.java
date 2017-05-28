@@ -7,11 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.text.LoginFilter;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -20,12 +22,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 
 import operation.Base64Tool;
 import operation.GeneralOperation;
+import operation.UserOperation;
 
 /**
  * Created by Administrator on 2017/5/27.
@@ -43,26 +56,21 @@ public class ModifyMessage extends ActionBarActivity {
     private static final String PHOTO_FILE_NAME = "temp_photo.jpg";
     private File tempFile;
 
+    private String baseString = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.modify_account_message);
-        headIconImage= (ImageView) findViewById(R.id.person_headIcon);
-        modifyNameET= (EditText) findViewById(R.id.modify_name);
-        if(GeneralOperation.getUser().getName().equals("null")){
+        headIconImage = (ImageView) findViewById(R.id.person_headIcon);
+        modifyNameET = (EditText) findViewById(R.id.modify_name);
+        if (GeneralOperation.getUser().getName().equals("null")) {
 
-        }else{
+        } else {
             modifyNameET.setText(GeneralOperation.getUser().getName());
         }
-        changeHeadIconButton= (Button) findViewById(R.id.changeHeadButton);
-        submitButton= (Button) findViewById(R.id.submitButton);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                UserOperation.modifyUserInfo(GeneralOperation.getUser(),modifyNameET.getText(),imagebianma);
-            }
-        });
-
+        changeHeadIconButton = (Button) findViewById(R.id.changeHeadButton);
+        submitButton = (Button) findViewById(R.id.submitButton);
 
         changeHeadIconButton.setOnClickListener(new View.OnClickListener() {
 
@@ -101,6 +109,42 @@ public class ModifyMessage extends ActionBarActivity {
             }
         });
 
+        /**
+         * submitButton
+         * 信息修改完成后 确认按钮
+         * onClick 发送新的用户信息
+         */
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                File file = new File(getApplicationContext().getFilesDir().getAbsolutePath() + "/base64.txt");
+                try {
+                    if (file.isFile() && file.exists()) { //判断文件是否存在
+
+                        InputStreamReader read = new InputStreamReader(new FileInputStream(file));//考虑到编码格式
+                        BufferedReader bufferedReader = new BufferedReader(read);
+
+                        String tempString = null;
+                        while ((tempString = bufferedReader.readLine()) != null) {
+                            baseString = baseString + tempString;
+                        }
+                        read.close();
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    UserOperation.modifyUserInfo(GeneralOperation.getUser(), modifyNameET.getText().toString(), baseString);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
 
 
     }
@@ -110,18 +154,7 @@ public class ModifyMessage extends ActionBarActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PHOTO_REQUEST_GALLERY) {
             if (data != null) {
-                 Uri uri = data.getData();
-                Log.i("Base64", Base64Tool.imageToBase(uri.getPath()));
-//                try {
-//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-//                    headIconImage.setImageBitmap(bitmap);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//
-
-                Log.i("data111", data.getData().getPath());
-                Log.e("图片路径？？", data.getData() + "");
+                Uri uri = data.getData();
                 crop(uri);
 
             }
@@ -145,6 +178,7 @@ public class ModifyMessage extends ActionBarActivity {
 
                 // 保存图片到internal storage
                 FileOutputStream outputStream;
+
                 try {
                     ByteArrayOutputStream out = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
@@ -153,19 +187,21 @@ public class ModifyMessage extends ActionBarActivity {
                     // final byte[] buffer = out.toByteArray();
                     // outputStream.write(buffer);
                     outputStream = ModifyMessage.this.openFileOutput("_head_icon.jpg", Context.MODE_PRIVATE);
-//                    Log.i("checkinfo", Base64Tool.imageToBase(getApplicationContext().getFilesDir().getAbsolutePath() + "/_head_icon.jpg"));
                     out.writeTo(outputStream);
                     out.close();
                     outputStream.close();
-                    Log.i("Base64", Base64Tool.imageToBase(Environment.getExternalStorageDirectory().getPath() + "/temp_photo.jpg"));
 
 
+                    String base64 = "data:image/jpeg;base64," + Base64Tool.imageToBase(getApplicationContext().getFilesDir().getAbsolutePath() + "/_head_icon.jpg");
+//                    System.out.println(base64);
 
-//                    Log.i("tofilepath", ModifyMessage.getRealFilePath(getApplicationContext(), data.getData()));
+                    File file = new File(getApplicationContext().getFilesDir().getAbsolutePath() + "/base64.txt");
+                    FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                    BufferedWriter bw = new BufferedWriter(fw);
+                    bw.write(base64);
+                    bw.close();
 
-//                    String image64=Base64Tool.imageToBase());
-//                    Toast.makeText(getApplicationContext(),image64,Toast.LENGTH_LONG).show();
-//                    Log.i("image64", image64);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -194,21 +230,21 @@ public class ModifyMessage extends ActionBarActivity {
         startActivityForResult(intent, PHOTO_REQUEST_CUT);
     }
 
-    public static String getRealFilePath( final Context context, final Uri uri ) {
-        if ( null == uri ) return null;
+    public static String getRealFilePath(final Context context, final Uri uri) {
+        if (null == uri) return null;
         final String scheme = uri.getScheme();
         String data = null;
-        if ( scheme == null )
+        if (scheme == null)
             data = uri.getPath();
-        else if ( ContentResolver.SCHEME_FILE.equals( scheme ) ) {
+        else if (ContentResolver.SCHEME_FILE.equals(scheme)) {
             data = uri.getPath();
-        } else if ( ContentResolver.SCHEME_CONTENT.equals( scheme ) ) {
-            Cursor cursor = context.getContentResolver().query( uri, new String[] { MediaStore.Images.ImageColumns.DATA }, null, null, null );
-            if ( null != cursor ) {
-                if ( cursor.moveToFirst() ) {
-                    int index = cursor.getColumnIndex( MediaStore.Images.ImageColumns.DATA );
-                    if ( index > -1 ) {
-                        data = cursor.getString( index );
+        } else if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
+            Cursor cursor = context.getContentResolver().query(uri, new String[]{MediaStore.Images.ImageColumns.DATA}, null, null, null);
+            if (null != cursor) {
+                if (cursor.moveToFirst()) {
+                    int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                    if (index > -1) {
+                        data = cursor.getString(index);
                     }
                 }
                 cursor.close();
@@ -216,8 +252,6 @@ public class ModifyMessage extends ActionBarActivity {
         }
         return data;
     }
-
-
 
 
 }

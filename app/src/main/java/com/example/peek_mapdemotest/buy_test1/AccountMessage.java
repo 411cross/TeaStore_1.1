@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import operation.GeneralOperation;
+import operation.GetImage;
 import operation.UserOperation;
 
 /**
@@ -39,13 +41,17 @@ public class AccountMessage extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_message);
 
+        avatarImage = (ImageView) findViewById(R.id.avatarImage);
+        accountName = (TextView) findViewById(R.id.account_name);
+
         try {
-            String avatarString = (String) UserOperation.userInfo(GeneralOperation.getUser()).get(2);
+            String avatarString = "http://" + (String) UserOperation.userInfo(GeneralOperation.getUser()).get(2);
+            Log.i("TEST GET2", (String) UserOperation.userInfo(GeneralOperation.getUser()).get(2));
+            new GetImage(avatarImage, avatarString).execute();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        avatarImage = (ImageView) findViewById(R.id.avatarImage);
-        accountName = (TextView) findViewById(R.id.account_name);
+
         if(GeneralOperation.getUser().getName().equals("null")){
             accountName.setText(GeneralOperation.getUser().getUsername());
         }

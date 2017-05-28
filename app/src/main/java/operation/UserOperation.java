@@ -31,7 +31,7 @@ public class UserOperation {
         String URL = "http://139.199.226.190:8080/api/v1/getInfo";
 
         try {
-            okht.postTools(URL, tokenJson, token, 1);
+            okht.postTools(URL, tokenJson, token, 3);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -39,7 +39,7 @@ public class UserOperation {
         }
 
         ArrayList responseList = okht.getResponse();
-        String json = GeneralOperation.tokenToString((String) responseList.get(1));
+        String json = (String) responseList.get(1);
         JSONObject object = new JSONObject(json);
         JSONObject data = object.getJSONObject("data");
 
@@ -47,8 +47,7 @@ public class UserOperation {
         userArrayList.add(0, data.getInt("userId"));
         userArrayList.add(1, data.getString("name"));
         userArrayList.add(2, data.getString("avatar"));
-        userArrayList.add(3, data.getInt("finish"));
-        userArrayList.add(4, data.getInt("score"));
+        userArrayList.add(3, data.getInt("score"));
 
 
         return userArrayList;
@@ -59,7 +58,7 @@ public class UserOperation {
      * 已登录用户修改地址
      * User user, String name(opt), String imagePath(opt) -> void
      */
-    public static void modifyUserInfo(User user, String name, String imagePath) throws JSONException {
+    public static void modifyUserInfo(User user, String name, String base64) throws JSONException {
 
         okHttpTools okht = new okHttpTools();
         String token = user.getToken();
@@ -69,8 +68,9 @@ public class UserOperation {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("Authorization", tokenJson);
         jsonObject.put("name", name);
-        jsonObject.put("avatar", imagePath);
+        jsonObject.put("avatar", base64);
         String json = jsonObject.toString();
+        Log.i("TEST JSON", json);
 
         try {
             okht.postTools(URL, json, token, 1);
