@@ -53,7 +53,6 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
         Intent intent = new Intent();
         Bundle bundle=this.getIntent().getExtras();
         int store_id = bundle.getInt("store_id");
-        Log.i("确认商铺id", String.valueOf(store_id));
 
         welTV = (TextView) findViewById(R.id.welcomeTV);
         outTV = (TextView) findViewById(R.id.outTV);

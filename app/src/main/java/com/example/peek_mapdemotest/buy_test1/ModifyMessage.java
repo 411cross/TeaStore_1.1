@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -152,6 +153,7 @@ public class ModifyMessage extends ActionBarActivity {
                     // final byte[] buffer = out.toByteArray();
                     // outputStream.write(buffer);
                     outputStream = ModifyMessage.this.openFileOutput("_head_icon.jpg", Context.MODE_PRIVATE);
+//                    Log.i("checkinfo", Base64Tool.imageToBase(getApplicationContext().getFilesDir().getAbsolutePath() + "/_head_icon.jpg"));
                     out.writeTo(outputStream);
                     out.close();
                     outputStream.close();
@@ -169,8 +171,8 @@ public class ModifyMessage extends ActionBarActivity {
                 }
             }
             try {
-//                if (tempFile != null && tempFile.exists())
-//                    tempFile.delete();
+                if (tempFile != null && tempFile.exists())
+                    tempFile.delete();
             } catch (Exception e) {
                 e.printStackTrace();
             }
