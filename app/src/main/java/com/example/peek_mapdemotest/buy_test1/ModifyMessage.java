@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -40,7 +42,7 @@ import operation.UserOperation;
 /**
  * Created by Administrator on 2017/5/27.
  */
-public class ModifyMessage extends ActionBarActivity {
+public class ModifyMessage extends AppCompatActivity {
     private ImageView headIconImage;
     private EditText modifyNameET;
     private Button changeHeadIconButton;
@@ -59,6 +61,10 @@ public class ModifyMessage extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.modify_account_message);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         headIconImage = (ImageView) findViewById(R.id.person_headIcon);
 
         try {

@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,7 +21,7 @@ import operation.GetImage;
 /**
  * Created by Administrator on 2017/5/24.
  */
-public class goods_detail extends ActionBarActivity {
+public class goods_detail extends AppCompatActivity {
     private ImageView imv1;
     private TextView nameTV;
     private TextView descriptionTV;
@@ -30,6 +32,10 @@ public class goods_detail extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.goods_detail);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         Intent intent = getIntent();
         String detail_name = intent.getStringExtra("detail_name");
         String detail_price = intent.getStringExtra("detail_price");

@@ -41,6 +41,9 @@ public class MainActivity_buy extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        setSupportActionBar(toolbar);
+
         button1 = (Button) findViewById(R.id.button1);
         ET1 = (EditText) findViewById(R.id.ET1);
         ET2 = (EditText) findViewById(R.id.ET2);
@@ -64,7 +67,7 @@ public class MainActivity_buy extends AppCompatActivity {
                         Toast.makeText(MainActivity_buy.this, message, Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(MainActivity_buy.this, "登录成功！", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(MainActivity_buy.this, StoresList.class);
+                        Intent intent = new Intent(MainActivity_buy.this, HomeActivity.class);
                         startActivity(intent);
 
                     }

@@ -2,6 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.peek_mapdemotest.buy_test1">
 
+    <uses-sdk android:targetSdkVersion="25" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 在SDCard中创建与删除文件权限 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <!-- 往SDCard写入数据权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 从SDCard读取数据权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,40 +30,28 @@
         </activity>
         <activity
             android:name=".buy_Activity"
-            android:label="商品列表">
-        </activity>
+            android:label="商品列表" />
         <activity
             android:name=".goods_detail"
-            android:label="商品详情">
-        </activity>
+            android:label="商品详情" />
         <activity
             android:name=".register"
-            android:label="注册">
-        </activity>
+            android:label="注册" />
         <activity
             android:name=".AddressList"
-            android:label="地址列表">
-        </activity>
+            android:label="地址列表" />
         <activity
             android:name=".AccountMessage"
-            android:label="我的资料">
-        </activity>
+            android:label="我的资料" />
         <activity
             android:name=".StoresList"
-            android:label="店铺列表">
-        </activity>
+            android:label="店铺列表" />
         <activity
             android:name=".ModifyMessage"
-            android:label="信息修改">
-        </activity>
+            android:label="信息修改" />
+        <activity
+            android:name=".HomeActivity"
+            android:label="首页" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!--在SDCard中创建与删除文件权限  -->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <!-- 往SDCard写入数据权限 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--  从SDCard读取数据权限 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <uses-sdk android:targetSdkVersion="25"  />
 </manifest>

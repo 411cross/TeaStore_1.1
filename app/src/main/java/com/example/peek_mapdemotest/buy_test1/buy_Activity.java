@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -35,7 +37,7 @@ import operation.UserOperation;
  * Created by Administrator on 2017/5/24.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class buy_Activity extends ActionBarActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+public class buy_Activity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     private ArrayList<Goods> goodsList = new ArrayList<Goods>();
     private TextView welTV;
     private TextView outTV;
@@ -49,6 +51,9 @@ public class buy_Activity extends ActionBarActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buy_content);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         Intent intent = new Intent();
         Bundle bundle=this.getIntent().getExtras();

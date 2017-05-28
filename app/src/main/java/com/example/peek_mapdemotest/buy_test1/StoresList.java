@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -36,7 +38,7 @@ import operation.UserOperation;
  */
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class StoresList extends ActionBarActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, AdapterView.OnItemLongClickListener {
+public class StoresList extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, AdapterView.OnItemLongClickListener {
 
     private ArrayList<Store> storesList = new ArrayList<Store>();
     private TextView welTV;
@@ -52,6 +54,9 @@ public class StoresList extends ActionBarActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.store_list);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         welTV = (TextView) findViewById(R.id.welcomeTV);
         outTV = (TextView) findViewById(R.id.outTV);

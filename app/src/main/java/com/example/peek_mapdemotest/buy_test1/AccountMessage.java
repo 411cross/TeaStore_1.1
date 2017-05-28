@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +29,7 @@ import operation.UserOperation;
 /**
  * Created by Administrator on 2017/5/27.
  */
-public class AccountMessage extends ActionBarActivity {
+public class AccountMessage extends AppCompatActivity {
     private ImageView avatarImage;
     private TextView accountName;
     private TextView accountEmail;
@@ -40,6 +42,9 @@ public class AccountMessage extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_message);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         avatarImage = (ImageView) findViewById(R.id.avatarImage);
         accountName = (TextView) findViewById(R.id.account_name);

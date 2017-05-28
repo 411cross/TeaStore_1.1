@@ -3,6 +3,8 @@ package com.example.peek_mapdemotest.buy_test1;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +18,7 @@ import operation.GeneralOperation;
 /**
  * Created by Administrator on 2017/5/25.
  */
-public class register extends ActionBarActivity {
+public class register extends AppCompatActivity {
 
 
     private EditText usernameET;
@@ -28,6 +30,9 @@ public class register extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_layout);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         usernameET = (EditText) findViewById(R.id.register_et_username);
         passwordET = (EditText) findViewById(R.id.register_et_password);

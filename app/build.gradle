@@ -5,7 +5,7 @@ android {
     buildToolsVersion '25.0.3'
     defaultConfig {
         applicationId "com.example.peek_mapdemotest.buy_test1"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -19,7 +19,7 @@ android {
     }
     productFlavors {
 
-        
+
     }
 }
 
@@ -27,10 +27,12 @@ dependencies {
     //    compile 'com.android.support:recyclerview-v7:24.2.1'
     compile files('libs/gson-2.8.0.jar')
 //    compile 'com.android.support:appcompat-v7:19.1.0'
+    //    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
+    compile files('libs/sun.misc.BASE64Decoder.jar')
     compile 'com.squareup.okio:okio:1.5.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'org.json:json:20160212'
-    //    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
-    compile files('libs/sun.misc.BASE64Decoder.jar')
     compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+    compile 'com.android.support:design:26.0.0-alpha1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
