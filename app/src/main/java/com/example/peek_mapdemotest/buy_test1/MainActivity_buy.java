@@ -3,6 +3,8 @@ package com.example.peek_mapdemotest.buy_test1;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +23,7 @@ import okhttp3.MediaType;
 import operation.GeneralOperation;
 
 
-public class MainActivity_buy extends ActionBarActivity {
+public class MainActivity_buy extends AppCompatActivity {
 
 
     private EditText ET1;
@@ -30,11 +32,15 @@ public class MainActivity_buy extends ActionBarActivity {
     private TextView tvTest;
     private Button button2;
 
+
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity_buy);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         button1 = (Button) findViewById(R.id.button1);
         ET1 = (EditText) findViewById(R.id.ET1);
         ET2 = (EditText) findViewById(R.id.ET2);

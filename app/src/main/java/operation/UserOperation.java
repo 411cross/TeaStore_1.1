@@ -70,7 +70,6 @@ public class UserOperation {
         jsonObject.put("name", name);
         jsonObject.put("avatar", base64);
         String json = jsonObject.toString();
-        Log.i("TEST JSON", json);
 
         try {
             okht.postTools(URL, json, token, 1);
