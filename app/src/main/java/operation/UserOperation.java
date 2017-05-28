@@ -55,7 +55,7 @@ public class UserOperation {
 
     /**
      * modifyUserInfo
-     * 已登录用户修改地址
+     * 已登录用户信息
      * User user, String name(opt), String imagePath(opt) -> void
      */
     public static void modifyUserInfo(User user, String name, String base64) throws JSONException {
@@ -71,6 +71,7 @@ public class UserOperation {
         jsonObject.put("avatar", base64);
         String json = jsonObject.toString();
 
+
         try {
             okht.postTools(URL, json, token, 1);
         } catch (ExecutionException e) {
@@ -78,6 +79,8 @@ public class UserOperation {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        GeneralOperation.getUser().setName((String) UserOperation.userInfo(user).get(1));
 
     }
 
@@ -422,7 +425,7 @@ public class UserOperation {
         JSONObject jObject = new JSONObject();
         String Authorization = "Bearer " + GeneralOperation.getUser().getToken();
         jObject.put("Authorization", Authorization);
-        jObject.put("newpass", newPass);
+        jObject.put("newPass", newPass);
         String userjson = jObject.toString();       //转换成JSON串
         String URL = "http://139.199.226.190:8080/api/v1/setPwd";  //请求URL   每个操作都有一个URL
         try {

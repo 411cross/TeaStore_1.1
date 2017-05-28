@@ -7,14 +7,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
-import android.text.LoginFilter;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,10 +31,10 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 
 import operation.Base64Tool;
 import operation.GeneralOperation;
+import operation.GetImage;
 import operation.UserOperation;
 
 /**
@@ -63,6 +60,14 @@ public class ModifyMessage extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.modify_account_message);
         headIconImage = (ImageView) findViewById(R.id.person_headIcon);
+
+        try {
+            String avatarString = "http://" + (String) UserOperation.userInfo(GeneralOperation.getUser()).get(2);
+            Log.i("TEST GET2", (String) UserOperation.userInfo(GeneralOperation.getUser()).get(2));
+            new GetImage( headIconImage, avatarString).execute();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         modifyNameET = (EditText) findViewById(R.id.modify_name);
         if (GeneralOperation.getUser().getName().equals("null")) {
 
@@ -139,6 +144,9 @@ public class ModifyMessage extends ActionBarActivity {
 
                 try {
                     UserOperation.modifyUserInfo(GeneralOperation.getUser(), modifyNameET.getText().toString(), baseString);
+                    Intent intent = new Intent(getApplicationContext(),AccountMessage.class);
+                    startActivity(intent);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -97,83 +96,78 @@ public class AddressList extends ActionBarActivity implements View.OnClickListen
         final Address address =addressList.get(i);
         final int addID = address.getAddress_id();
         final View myLongClickView = layoutInflater.inflate(R.layout.useraddress_longclick, null);
-        Dialog alertDialog1 = new AlertDialog.Builder(this).
-                setView(myLongClickView).create();
-        alertDialog1.show();
-
-        Button button1 = (Button) myLongClickView.findViewById(R.id.modifyButton);
-        Button button2 = (Button) myLongClickView.findViewById(R.id.deleteButton);
-        button1.setOnClickListener(new View.OnClickListener() {
+        final CharSequence[] items = {"修改地址", "删除地址"};
+        Dialog alertDialog1 = new AlertDialog.Builder(this).setItems(items, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                final View myModifyClickView = layoutInflater.inflate(R.layout.modify_address, null);
-                //修改对话框
-               final EditText ED1 = (EditText) myModifyClickView.findViewById(R.id.modify_name_ET);
-                ED1.setText(address.getName());
-                final  EditText ED2 = (EditText) myModifyClickView.findViewById(R.id.modify_address_ET);
-                ED2.setText(address.getContent());
-                final EditText ED3 = (EditText) myModifyClickView.findViewById(R.id.modify_phon_ET);
-                ED3.setText(address.getPhone());
-                Dialog alertDialog = new AlertDialog.Builder(AddressList.this).
-                        setTitle("修改收货地址").setView(myModifyClickView).
-                        setIcon(android.R.drawable.ic_dialog_info).
-                        setPositiveButton("提交", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (i== 0) {
+                    final View myModifyClickView = layoutInflater.inflate(R.layout.modify_address, null);
+                    //修改对话框
+                    final EditText ED1 = (EditText) myModifyClickView.findViewById(R.id.modify_name_ET);
+                    ED1.setText(address.getName());
+                    final  EditText ED2 = (EditText) myModifyClickView.findViewById(R.id.modify_address_ET);
+                    ED2.setText(address.getContent());
+                    final EditText ED3 = (EditText) myModifyClickView.findViewById(R.id.modify_phon_ET);
+                    ED3.setText(address.getPhone());
+                    Dialog alertDialog = new AlertDialog.Builder(AddressList.this).
+                            setTitle("修改收货地址").setView(myModifyClickView).
+                            setIcon(android.R.drawable.ic_dialog_info).
+                            setPositiveButton("提交", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // TODO Auto-generated method stub
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // TODO Auto-generated method stub
 
-//                                Log.i("modify111", ED1.getText().toString());
-//                                Log.i("modify122", ED2.getText().toString());
-                                try {
-                                    ArrayList modifyResponse=UserOperation.ModifyAddress(addID, ED1.getText().toString(), ED2.getText().toString(), ED3.getText().toString());
-//                                    if (Integer.parseInt((String) modifyResponse.get(0)) != 201) {
-//                                        JSONObject object = new JSONObject((String) modifyResponse.get(1));
-//                                        String message = object.getString("message");
-//                                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-//                                    } else {
-//                                        Toast.makeText(getApplicationContext(), "修改成功！", Toast.LENGTH_SHORT).show();
-//                                    GeneralOperation.getUser().setAddressList(UserOperation.getAddress());
-//                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                    try {
+                                        ArrayList modifyResponse=UserOperation.ModifyAddress(addID, ED1.getText().toString(), ED2.getText().toString(), ED3.getText().toString());
+                                        if(Integer.parseInt((String)modifyResponse.get(0))!=201){
+                                            JSONObject object = new JSONObject((String) modifyResponse.get(1));
+                                            String message = object.getString("message");
+                                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                        }
+                                        else{
+                                            Toast.makeText(getApplicationContext(),"修改成功！", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        }
+
+                                        finish();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            }
-                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // TODO Auto-generated method stub
-                    }
-                }).
-                create();
-        alertDialog.show();
-            }
-        });
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // TODO Auto-generated method stub
+                        }
+                    }).
+                            create();
+                    alertDialog.show();
+                } else {
+                    try {
+                        ArrayList list = UserOperation.DeleteAddress(addID);
+                        if(Integer.parseInt((String)list.get(0))!=204){
+                            JSONObject object = new JSONObject((String)list.get(1));
+                            String message = object.getString("message");
+                            Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
 
-                try {
-                    ArrayList list = UserOperation.DeleteAddress(addID);
-                    if(Integer.parseInt((String)list.get(0))!=204){
-                        JSONObject object = new JSONObject((String)list.get(1));
-                        String message = object.getString("message");
-                        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "删除成功！", Toast.LENGTH_SHORT).show();
+                            GeneralOperation.getUser().setAddressList(UserOperation.getAddress());
+                            finish();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "删除成功！", Toast.LENGTH_SHORT).show();
-                        GeneralOperation.getUser().setAddressList(UserOperation.getAddress());
-                        finish();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
                 }
-
-
             }
-        });
+        })
+                .create();
+        alertDialog1.show();
         return false;
     }
 
