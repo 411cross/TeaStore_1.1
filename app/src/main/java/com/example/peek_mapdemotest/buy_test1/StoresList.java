@@ -31,6 +31,9 @@ import object.User;
 import operation.GeneralOperation;
 import operation.UserOperation;
 
+/**
+ * Created by derrick on 2017/5/27.
+ */
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class StoresList extends ActionBarActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, AdapterView.OnItemLongClickListener {
