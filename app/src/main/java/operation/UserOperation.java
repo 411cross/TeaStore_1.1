@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutionException;
 
 import listview.Address;
 import listview.Goods;
+import listview.GoodsClass;
 import listview.Store;
 import object.User;
 import okhttp_tools.okHttpTools;
@@ -317,6 +318,35 @@ public class UserOperation {
 
 
     /**
+     * getGoodListByClassRes
+     * 获取指定商铺的商品列表的整个 response
+     * -> ArrayList responseList
+     */
+    public static ArrayList getGoodsListByClassRes(int class_id) throws JSONException {
+
+        okHttpTools okhttpT = new okHttpTools();
+        JSONObject jsonObject = new JSONObject();
+        String Authorization = "Bearer " + GeneralOperation.getUser().getToken();
+        jsonObject.put("Authorization", Authorization);
+        jsonObject.put("store_id", class_id);
+        String json = jsonObject.toString();
+        String URL = "http://139.199.226.190:8080/api/v1/shop/getGoodsListByClass?class_id=" + class_id;
+
+        try {
+            okhttpT.postTools(URL, json, Authorization, 3);      //提交JSON 到服务器
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList responseList = okhttpT.getResponse();
+        return responseList;
+
+    }
+
+
+    /**
      * getGoodList
      * 获取指定商铺的商品列表
      * ArrayList responseList -> ArrayList<Goods> goodsList
@@ -334,14 +364,14 @@ public class UserOperation {
                 JSONObject goodsData = (JSONObject) jsonArray.get(i);
                 int goods_id = goodsData.getInt("goods_id");
                 int store_id = goodsData.getInt("store_id");
-//                int class_id = goodsData.getInt("class_id");
+                int class_id = goodsData.getInt("class_id");
                 String name = goodsData.getString("name");
                 String description = goodsData.getString("description");
                 String price = goodsData.getString("price");
                 int stock = goodsData.getInt("stock");
                 int sold_amount = goodsData.getInt("sold_amount");
                 String thumb = goodsData.getString("thumb");
-                Goods good = new Goods(goods_id, store_id, 1, name, description, price, stock, sold_amount, thumb);
+                Goods good = new Goods(goods_id, store_id, class_id, name, description, price, stock, sold_amount, thumb);
                 goodsList.add(i, good);
             }
 
@@ -415,8 +445,8 @@ public class UserOperation {
     }
 
     /**
-     * getStoreList
-     * 获取指定商铺的商品列表
+     * setPwd
+     * 用户设置密码
      * ArrayList responseList -> ArrayList<Goods> goodsList
      */
 
@@ -439,6 +469,63 @@ public class UserOperation {
         return responseList;
     }
 
+    /**
+     * getStoreListRes
+     * 获取商铺列表的整个 response
+     * -> ArrayList responseList
+     */
+    public static ArrayList getClassListRes() throws JSONException {
+
+        okHttpTools okhttpT = new okHttpTools();
+        JSONObject jsonObject = new JSONObject();
+        String Authorization = "Bearer " + GeneralOperation.getUser().getToken();
+        jsonObject.put("Authorization", Authorization);
+        String json = jsonObject.toString();
+
+        String URL = "http://139.199.226.190:8080/api/v1/shop/getClassList";
+        try {
+            okhttpT.postTools(URL, json, Authorization, 3);      //提交JSON 到服务器
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList responseList = okhttpT.getResponse();
+        return responseList;
+
+    }
+
+    /**
+     * getClassList
+     * 获取指定分类的商品列表
+     * ArrayList responseList -> ArrayList<Goods> goodsList
+     */
+    public static ArrayList getClassList(ArrayList responseList) throws JSONException {
+
+        ArrayList<GoodsClass> classList = new ArrayList<GoodsClass>();
+        String data = (String) responseList.get(1);
+        JSONObject object = new JSONObject(data);
+
+        try {
+            JSONArray jsonArray = object.getJSONArray("data");
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject storesData = (JSONObject) jsonArray.get(i);
+                int class_id = storesData.getInt("class_id");
+                String name = storesData.getString("name");
+                String description = storesData.getString("description");
+                GoodsClass goodsClass = new GoodsClass(class_id, name, description);
+                classList.add(i, goodsClass);
+            }
+
+        } catch (JSONException e) {
+
+        }
+
+        return classList;
+
+    }
 
 
 

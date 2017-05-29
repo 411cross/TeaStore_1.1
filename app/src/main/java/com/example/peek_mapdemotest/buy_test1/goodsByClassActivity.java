@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -37,14 +36,14 @@ import operation.UserOperation;
  * Created by Administrator on 2017/5/24.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class buy_Activity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+public class goodsByClassActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     private ArrayList<Goods> goodsList = new ArrayList<Goods>();
     private TextView welTV;
     private TextView outTV;
     private User user = null;
     public ArrayList list = new ArrayList();
 
-    public buy_Activity() {
+    public goodsByClassActivity() {
     }
 
     @Override
@@ -56,17 +55,18 @@ public class buy_Activity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
 
         Intent intent = new Intent();
-        Bundle bundle = this.getIntent().getExtras();
+        Bundle bundle=this.getIntent().getExtras();
         int sc_id = bundle.getInt("sc_id");
         int flag = bundle.getInt("flag");
 
         welTV = (TextView) findViewById(R.id.welcomeTV);
         outTV = (TextView) findViewById(R.id.outTV);
         user = GeneralOperation.getUser();
-        if (user.getName().equals("null")) {
+        if(user.getName().equals("null")){
             welTV.setText(user.getUsername() + " 欢迎你！");
-        } else {
-            welTV.setText(user.getName() + " 欢迎你！");
+        }
+        else{
+            welTV.setText(user.getName()+" 欢迎你！");
         }
         welTV.setOnClickListener(this);
         outTV.setOnClickListener(new View.OnClickListener() {
@@ -82,8 +82,9 @@ public class buy_Activity extends AppCompatActivity implements View.OnClickListe
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
 //            String Authorization = data.getString("Authorization");
-                    } else {
-                        JSONObject object = new JSONObject((String) list.get(1));
+                    }
+                    else{
+                        JSONObject object = new JSONObject((String)list.get(1));
                         String message = object.getString("message");
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                     }
@@ -94,13 +95,7 @@ public class buy_Activity extends AppCompatActivity implements View.OnClickListe
         });
 
         try {
-            ArrayList responseList = new ArrayList();
-            if (flag == 1) {
-                responseList = UserOperation.getGoodsListRes(sc_id);
-            } else if (flag == 2) {
-                responseList = UserOperation.getGoodsListByClassRes(sc_id);
-            }
-
+            ArrayList responseList = UserOperation.getGoodsListRes(sc_id);
             if (Integer.parseInt((String) responseList.get(0)) != 200) {
                 JSONObject jsonObject = new JSONObject((String) responseList.get(1));
                 String message = jsonObject.getString("message");
@@ -115,7 +110,7 @@ public class buy_Activity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
 
-        GoodsAdapter goodsAdapter = new GoodsAdapter(buy_Activity.this, R.layout.goods_item, goodsList);
+        GoodsAdapter goodsAdapter = new GoodsAdapter(goodsByClassActivity.this, R.layout.goods_item, goodsList);
         ListView listView1 = (ListView) findViewById(R.id.listView1);
         listView1.setAdapter(goodsAdapter);
         listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -123,7 +118,7 @@ public class buy_Activity extends AppCompatActivity implements View.OnClickListe
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Goods goods = goodsList.get(i);
 //                Toast.makeText(buy_Activity.this, goods.getGoods_name(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(buy_Activity.this, goods_detail.class);
+                Intent intent = new Intent(goodsByClassActivity.this, goods_detail.class);
                 intent.putExtra("detail_name", goods.getGoods_name());
                 intent.putExtra("detail_thumb", goods.getThumb());
                 intent.putExtra("detail_price", goods.getPrice());
@@ -218,7 +213,7 @@ public class buy_Activity extends AppCompatActivity implements View.OnClickListe
                         String message = jsonObject.getString("message");
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                     } else {
-                        Intent intent = new Intent(buy_Activity.this, AddressList.class);
+                        Intent intent = new Intent(goodsByClassActivity.this, AddressList.class);
                         if (user.getAddressList().size() == 0) {
                             Toast.makeText(this, "无收货地址", Toast.LENGTH_SHORT).show();
                         } else {
@@ -231,7 +226,7 @@ public class buy_Activity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.CheckCountantMessage:
-                Intent intent = new Intent(getApplicationContext(), AccountMessage.class);
+                Intent intent = new Intent(getApplicationContext(),AccountMessage.class);
                 startActivity(intent);
                 break;
             default:

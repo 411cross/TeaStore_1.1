@@ -4,8 +4,10 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -37,6 +40,8 @@ public class AddressList extends AppCompatActivity implements View.OnClickListen
     private ArrayList<Address> addressList = new ArrayList<Address>();
     User user = GeneralOperation.getUser();
 
+    private FloatingActionButton addButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +49,8 @@ public class AddressList extends AppCompatActivity implements View.OnClickListen
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        addButton = (FloatingActionButton) findViewById(R.id.add_button);
 
         try {
             ArrayList responseList = UserOperation.getAddress();
@@ -68,6 +75,68 @@ public class AddressList extends AppCompatActivity implements View.OnClickListen
         });
 
         addressListView.setOnItemLongClickListener(this);
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LayoutInflater layoutInflater = LayoutInflater.from(AddressList.this);
+                final View myLoginView = layoutInflater.inflate(R.layout.user_address, null);
+                Dialog alertDialog = new AlertDialog.Builder(AddressList.this).
+                        setTitle("创建收货地址").setView(myLoginView).
+                        setIcon(android.R.drawable.ic_dialog_info).
+                        setPositiveButton("提交", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // TODO Auto-generated method stub
+                                EditText ED1 = (EditText) myLoginView.findViewById(R.id.Consignee_name);
+                                EditText ED2 = (EditText) myLoginView.findViewById(R.id.Consignee_address);
+                                EditText ED3 = (EditText) myLoginView.findViewById(R.id.Consignee_phonenumber);
+                                Log.i("111", ED1.getText().toString());
+                                Log.i("122", ED2.getText().toString());
+                                try {
+                                    ArrayList list1;
+                                    list1 = UserOperation.CreateAddress(GeneralOperation.getUser(), ED1.getText().toString(), ED3.getText().toString(), ED2.getText().toString());
+                                    if (Integer.parseInt((String) list1.get(0)) != 201) {
+                                        JSONObject object = new JSONObject((String) list1.get(1));
+                                        String message = object.getString("message");
+                                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "创建成功！", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }).
+                        setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // TODO Auto-generated method stub
+                            }
+                        }).
+                        create();
+                alertDialog.show();
+//                final TextView  TV1 = new TextView(this);
+//                TV1.setText("收货人：");
+//                final EditText inputServer = new EditText(this);
+//                final TextView  TV2 = new TextView(this);
+//                TV1.setText("收货地址：");
+//                final EditText inputServer1 = new EditText(this);
+//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                builder.setTitle("创建收货地址").setIcon(android.R.drawable.ic_dialog_info).setView(TV1).setView(inputServer).setView(TV2).setView(inputServer1)
+//                        .setNegativeButton("Cancel", null);
+//                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        inputServer.getText().toString();
+//                    }
+//                });
+//                builder.show();
+            }
+        });
 
     }
 

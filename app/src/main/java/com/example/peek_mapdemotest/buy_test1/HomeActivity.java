@@ -3,19 +3,20 @@ package com.example.peek_mapdemotest.buy_test1;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,19 +24,33 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import okhttp3.MediaType;
+import fragment.ClassFragment;
+import fragment.StoreFragment;
+import fragment.MyFragmentPagerAdapter;
+import object.User;
 import operation.GeneralOperation;
 
 
 public class HomeActivity extends AppCompatActivity {
 
+    private User user = null;
+    public ArrayList list = new ArrayList();
+
 
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
 
-    private String[] titles = {"查看地址", "查看信息", "退出"};
+    private String[] titles = {"我的地址", "我的信息", "退出"};
+    private String[] tabTitles ={"商铺", "分类"};
     private ListView drawList;
+    private RelativeLayout drawerList;
+
+    private MyFragmentPagerAdapter pagerAdapter;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +62,9 @@ public class HomeActivity extends AppCompatActivity {
 
         // 初始化数据
         initData();
+
+        initLayoutView();
+
     }
 
     // 初始化Toolbar、DrawerLayout，生成相应的对象
@@ -59,12 +77,13 @@ public class HomeActivity extends AppCompatActivity {
         MyAdapter myAdapter = new MyAdapter();
         drawList.setAdapter(myAdapter);
 
+
     }
 
     // 设置应用title
     private void initData() {
         // 设置Toolbar标题，需在setSupportActionBar之前，不然会失效
-        mToolbar.setTitle("首页");
+        mToolbar.setTitle("Tea Store");
         mToolbar.setTitleTextColor(Color.parseColor("#ffffff"));
 
         // 设置toolbar支持actionbar
@@ -108,8 +127,97 @@ public class HomeActivity extends AppCompatActivity {
 
 //            iv_photo.setBackgroundResource(imagesId[position]);
             tv_title.setText(titles[position]);
+
+            drawList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
+                    switch (i) {
+                        case 0:
+                            Intent checkAddress = new Intent(HomeActivity.this, AddressList.class);
+                            startActivity(checkAddress);
+                            break;
+                        case 1:
+                            Intent checkInfo = new Intent(HomeActivity.this, AccountMessage.class);
+                            startActivity(checkInfo);
+                            break;
+                        case 2:
+                            try {
+                                user = GeneralOperation.getUser();
+                                list = GeneralOperation.logout(user);
+                                if (Integer.parseInt((String) list.get(0)) == 204) {
+                                    Toast.makeText(getApplicationContext(), "退出成功", Toast.LENGTH_LONG).show();
+//                        Intent intent =new Intent(getApplicationContext(),MainActivity_buy.class);
+//                        startActivity(intent);
+                                    final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+//            String Authorization = data.getString("Authorization");
+                                } else {
+                                    JSONObject object = new JSONObject((String) list.get(1));
+                                    String message = object.getString("message");
+                                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        default:
+                            break;
+
+                    }
+                }
+
+            });
             return view;
         }
+    }
+
+    private void initLayoutView() {
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("商铺"));
+        tabLayout.addTab(tabLayout.newTab().setText("分类"));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Log.i("TEST","onTabSelected:"+tab.getText());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        tabLayout.setupWithViewPager(viewPager);
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(StoreFragment.newInstance(1));
+        fragments.add(ClassFragment.newInstance(2));
+
+        MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(),fragments, Arrays.asList(tabTitles));
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.i("TEST","select page:"+position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
     }
 
 }
