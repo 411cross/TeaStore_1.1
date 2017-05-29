@@ -16,12 +16,11 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="Tea Shop"
+        android:label="Tea Mall"
         android:supportsRtl="true"
         android:theme="@style/MyAppTheme">
         <activity
-            android:name=".MainActivity_buy"
-            android:label="Tea Shop">
+            android:name=".MainActivity_buy">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,6 +51,23 @@
         <activity
             android:name=".HomeActivity"
             android:label="首页" />
+        <activity android:name=".Order"/>
+        <activity android:name=".OrderList"/>
+        <activity android:name=".pay"/>
+
+        <provider
+            android:authorities="com.example.peek_mapdemotest.buy_test1.provider"
+            android:name="android.support.v4.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
+
     </application>
+
+
 
 </manifest>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp">
+
+<TextView
+android:id="@+id/textView3"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="交易编号"
+android:textSize="20sp"
+android:layout_alignParentTop="true"
+android:layout_alignParentLeft="true"
+android:layout_alignParentStart="true" />
+
+<TextView
+android:id="@+id/textView5"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="交易时间"
+android:textSize="20sp"
+android:layout_marginTop="20dp"
+android:layout_below="@+id/textView7"
+android:layout_alignParentLeft="true"
+android:layout_alignParentStart="true" />
+<TextView
+android:id="@+id/textView7"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="价格"
+
+android:textSize="20sp"
+android:layout_marginLeft="32dp"
+android:layout_marginStart="32dp"
+android:layout_alignBaseline="@+id/pay"
+android:layout_alignBottom="@+id/pay"
+android:layout_toRightOf="@+id/order_no"
+android:layout_toEndOf="@+id/order_no" />
+
+<TextView
+android:id="@+id/order_no"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_gravity="center_vertical"
+android:text="订单编号"
+android:textSize="18sp"
+android:textStyle="bold"
+
+android:maxLength="100"
+android:layout_marginLeft="14dp"
+android:layout_marginStart="14dp"
+android:layout_alignBaseline="@+id/textView3"
+android:layout_alignBottom="@+id/textView3"
+android:layout_toRightOf="@+id/textView3"
+android:layout_toEndOf="@+id/textView3" />
+
+<TextView
+android:id="@+id/pay"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="总价"
+android:textSize="18sp"
+android:textStyle="bold"
+android:layout_marginLeft="14dp"
+android:layout_marginStart="14dp"
+android:layout_alignBottom="@+id/textView3"
+android:layout_toRightOf="@+id/textView7"
+android:layout_toEndOf="@+id/textView7" />
+
+<TextView
+android:id="@+id/created_at"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="创建时间"
+android:textSize="18sp"
+android:textStyle="bold"
+android:layout_alignBaseline="@+id/textView5"
+android:layout_alignBottom="@+id/textView5"
+android:layout_toRightOf="@+id/textView5"
+android:layout_toEndOf="@+id/textView5"
+android:layout_marginLeft="14dp"
+android:layout_marginStart="14dp"/>
+
+
+</RelativeLayout>

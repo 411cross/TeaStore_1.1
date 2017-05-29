@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.peek_mapdemotest.buy_test1.AddressList">
+    tools:context="com.example.peek_mapdemotest.buy_test1.AddressList"
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

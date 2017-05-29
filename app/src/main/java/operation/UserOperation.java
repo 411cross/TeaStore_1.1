@@ -1,5 +1,7 @@
 package operation;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +12,7 @@ import java.util.concurrent.ExecutionException;
 import listview.Address;
 import listview.Goods;
 import listview.GoodsClass;
+import listview.Order_gen;
 import listview.Store;
 import object.User;
 import okhttp_tools.okHttpTools;
@@ -527,6 +530,88 @@ public class UserOperation {
 
     }
 
+    //获取用户订单
+    public static ArrayList getOrder() throws JSONException {
+
+        ArrayList<Order_gen> orderList = new ArrayList<Order_gen>();
+        User user = GeneralOperation.getUser();
+        okHttpTools okht = new okHttpTools();
+        String token = user.getToken();
+        JSONObject jObject = new JSONObject();
+        String Authorization = "Bearer " + token;
+        jObject.put("Authorization", Authorization);
+        jObject.put("status",-1);
+        String userjson = jObject.toString();
+        String URL = "http://139.199.226.190:8080/api/v1/shop/getOrder?status=-1";
+        Log.i("book", "123231");
+        try {
+            okht.postTools(URL, userjson, Authorization, 3);      //提交JSON 到服务器
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        ArrayList responseList = okht.getResponse();
+        String data = (String) responseList.get(1);
+        JSONObject object = new JSONObject(data);
+        try {
+            JSONArray jsonArray = object.getJSONArray("data");
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject addressData = (JSONObject) jsonArray.get(i);
+                int order_id = addressData.getInt("order_id");
+                int userId = addressData.getInt("userId");
+                int address_id = addressData.getInt("address_id");
+                String order_no = addressData.getString("order_no");
+                String pay = addressData.getString("pay");
+                int status = addressData.getInt("status");
+                String finish_time = addressData.getString("finish_time");
+                String created_at = addressData.getString("created_at");
+                Order_gen og=new Order_gen(order_id,userId,address_id,order_no,pay,status,finish_time,created_at);
+                orderList.add(i, og);
+                Log.i("adddddd", order_id+"");
+            }
+            user.setOrderList(orderList);
+            GeneralOperation.updateUser(user);
+        } catch (JSONException e) {
+            user.setOrderList(orderList);
+        }
+        return responseList;
+    }
+
+    //上传订单信息
+    public static boolean CreateOrder(User user, String address_id, String number, String goods_id) throws JSONException {
+        okHttpTools okhttpT = new okHttpTools();    // 新建HTTP代理
+        JSONObject jObject = new JSONObject();
+        JSONObject jObject2 =new JSONObject();
+        JSONObject jObject3 =new JSONObject();
+        String Authorization = "Bearer " + user.getToken();
+        jObject.put("Authorization", Authorization);
+        jObject2.put("goods_id", goods_id);
+        jObject2.put("coupon_id", "0");
+        jObject2.put("amount", number);
+
+        JSONArray ja =new JSONArray();
+        ja.put(jObject2);
+        jObject.put("goods", ja);
+        jObject.put("address_id", address_id);
+        String userjson = jObject.toString();
+        Log.i("aaaa",userjson);
+        //转换成JSON串
+        String URL = "http://139.199.226.190:8080/api/v1/shop/createOrder";  //请求URL   每个操作都有一个URL
+        try {
+            okhttpT.postTools(URL, userjson, Authorization, 0);      //提交JSON 到服务器
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //判断返回结果
+        if (Integer.parseInt((String) okhttpT.getResponse().get(0)) == 201) {
+            return true;
+        }
+        return false;
+    }
 
 
 }

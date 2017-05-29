@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,6 +35,8 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import operation.Base64Tool;
 import operation.GeneralOperation;
@@ -64,6 +68,16 @@ public class ModifyMessage extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //设置 ToolBar 返回箭头
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         headIconImage = (ImageView) findViewById(R.id.person_headIcon);
 
@@ -103,9 +117,19 @@ public class ModifyMessage extends AppCompatActivity {
                         } else {
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                                tempFile = new File(Environment.getExternalStorageDirectory(),
-                                        PHOTO_FILE_NAME);
-                                Uri uri = Uri.fromFile(tempFile);
+                                tempFile = getCreateFile();
+                                Uri uri;
+                                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M){
+                                    uri = Uri.fromFile(tempFile);
+                                }else{
+                                    /**
+                                     * 7.0 调用系统相机拍照不再允许使用Uri方式，应该替换为FileProvider
+                                     * 并且这样可以解决MIUI系统上拍照返回size为0的情况
+                                     */
+                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                    uri = FileProvider.getUriForFile(getApplicationContext(), "com.example.peek_mapdemotest.buy_test1.provider", tempFile);
+                                }
+                                Log.e("nanchen",uri.toString());
                                 intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                                 startActivityForResult(intent, PHOTO_REQUEST_CAREMA);
                             } else {
@@ -265,6 +289,32 @@ public class ModifyMessage extends AppCompatActivity {
             }
         }
         return data;
+    }
+
+    private  File getCreateFile() {
+
+        String cachePath = null;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            cachePath = ModifyMessage.this.getExternalCacheDir().getPath();
+        } else {
+            cachePath = ModifyMessage.this.getCacheDir().getPath();
+        }
+        File dir = new File(cachePath);
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String timeStamp = format.format(new Date());
+        String fileName = "robot_" + timeStamp + ".png";
+        File file = new File(dir, fileName);
+        if (file.exists()) {
+            file.delete();
+        }
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String mCurrentPhotoPath = file.getAbsolutePath();
+        return file;
     }
 
 

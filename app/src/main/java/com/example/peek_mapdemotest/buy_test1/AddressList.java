@@ -1,7 +1,6 @@
 package com.example.peek_mapdemotest.buy_test1;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -50,6 +50,16 @@ public class AddressList extends AppCompatActivity implements View.OnClickListen
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //设置 ToolBar 返回箭头
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         addButton = (FloatingActionButton) findViewById(R.id.add_button);
 
         try {
@@ -81,9 +91,8 @@ public class AddressList extends AppCompatActivity implements View.OnClickListen
             public void onClick(View view) {
                 LayoutInflater layoutInflater = LayoutInflater.from(AddressList.this);
                 final View myLoginView = layoutInflater.inflate(R.layout.user_address, null);
-                Dialog alertDialog = new AlertDialog.Builder(AddressList.this).
+                AlertDialog alertDialog = new AlertDialog.Builder(AddressList.this).
                         setTitle("创建收货地址").setView(myLoginView).
-                        setIcon(android.R.drawable.ic_dialog_info).
                         setPositiveButton("提交", new DialogInterface.OnClickListener() {
 
                             @Override

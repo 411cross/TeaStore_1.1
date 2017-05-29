@@ -42,8 +42,6 @@ public class MainActivity_buy extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setSupportActionBar(toolbar);
-
         button1 = (Button) findViewById(R.id.button1);
         ET1 = (EditText) findViewById(R.id.ET1);
         ET2 = (EditText) findViewById(R.id.ET2);
@@ -107,7 +105,7 @@ public class MainActivity_buy extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main_activity_buy, menu);
+//        getMenuInflater().inflate(R.menu.menu_main_activity_buy, menu);
         return true;
     }
 
@@ -118,10 +116,10 @@ public class MainActivity_buy extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

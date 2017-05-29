@@ -55,43 +55,20 @@ public class buy_Activity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //设置 ToolBar 返回箭头
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         Intent intent = new Intent();
         Bundle bundle = this.getIntent().getExtras();
         int sc_id = bundle.getInt("sc_id");
         int flag = bundle.getInt("flag");
-
-        welTV = (TextView) findViewById(R.id.welcomeTV);
-        outTV = (TextView) findViewById(R.id.outTV);
-        user = GeneralOperation.getUser();
-        if (user.getName().equals("null")) {
-            welTV.setText(user.getUsername() + " 欢迎你！");
-        } else {
-            welTV.setText(user.getName() + " 欢迎你！");
-        }
-        welTV.setOnClickListener(this);
-        outTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    list = GeneralOperation.logout(user);
-                    if (Integer.parseInt((String) list.get(0)) == 204) {
-//                        Toast.makeText(getApplicationContext(),"退出成功",Toast.LENGTH_LONG).show();
-//                        Intent intent =new Intent(getApplicationContext(),MainActivity_buy.class);
-//                        startActivity(intent);
-                        final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-//            String Authorization = data.getString("Authorization");
-                    } else {
-                        JSONObject object = new JSONObject((String) list.get(1));
-                        String message = object.getString("message");
-                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
 
         try {
             ArrayList responseList = new ArrayList();
@@ -124,6 +101,7 @@ public class buy_Activity extends AppCompatActivity implements View.OnClickListe
                 Goods goods = goodsList.get(i);
 //                Toast.makeText(buy_Activity.this, goods.getGoods_name(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(buy_Activity.this, goods_detail.class);
+                intent.putExtra("goods_id", goods.getGoods_id() + "");
                 intent.putExtra("detail_name", goods.getGoods_name());
                 intent.putExtra("detail_thumb", goods.getThumb());
                 intent.putExtra("detail_price", goods.getPrice());

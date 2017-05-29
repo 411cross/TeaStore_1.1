@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,18 +33,22 @@ import fragment.StoreFragment;
 import fragment.MyFragmentPagerAdapter;
 import object.User;
 import operation.GeneralOperation;
+import operation.GetImage;
+import operation.UserOperation;
 
 
 public class HomeActivity extends AppCompatActivity {
 
     private User user = null;
     public ArrayList list = new ArrayList();
+    private ImageView avatarImage;
+    private TextView accountNickName;
 
 
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
 
-    private String[] titles = {"我的地址", "我的信息", "退出"};
+    private String[] titles = {"我的地址", "我的订单", "我的信息", "退出"};
     private String[] tabTitles ={"商铺", "分类"};
     private ListView drawList;
     private RelativeLayout drawerList;
@@ -83,7 +88,7 @@ public class HomeActivity extends AppCompatActivity {
     // 设置应用title
     private void initData() {
         // 设置Toolbar标题，需在setSupportActionBar之前，不然会失效
-        mToolbar.setTitle("Tea Store");
+        mToolbar.setTitle("Tea Mall");
         mToolbar.setTitleTextColor(Color.parseColor("#ffffff"));
 
         // 设置toolbar支持actionbar
@@ -123,6 +128,16 @@ public class HomeActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = View.inflate(getApplicationContext(), R.layout.drawer_list, null);
 //            ImageView iv_photo = (ImageView) view.findViewById(R.id.iv_photo);
+            avatarImage = (ImageView) findViewById(R.id.ib_photo);
+            accountNickName = (TextView) findViewById(R.id.nick_name);
+            accountNickName.setText(GeneralOperation.getUser().getName());
+
+            try {
+                String avatarString = "http://" + (String) UserOperation.userInfo(GeneralOperation.getUser()).get(2);
+                new GetImage(avatarImage, avatarString).execute();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
 
 //            iv_photo.setBackgroundResource(imagesId[position]);
@@ -138,10 +153,14 @@ public class HomeActivity extends AppCompatActivity {
                             startActivity(checkAddress);
                             break;
                         case 1:
+                            Intent orderList = new Intent(HomeActivity.this, OrderList.class);
+                            startActivity(orderList);
+                            break;
+                        case 2:
                             Intent checkInfo = new Intent(HomeActivity.this, AccountMessage.class);
                             startActivity(checkInfo);
                             break;
-                        case 2:
+                        case 3:
                             try {
                                 user = GeneralOperation.getUser();
                                 list = GeneralOperation.logout(user);

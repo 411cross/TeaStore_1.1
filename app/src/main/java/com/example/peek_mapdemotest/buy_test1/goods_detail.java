@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,8 +38,9 @@ public class goods_detail extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        String detail_name = intent.getStringExtra("detail_name");
-        String detail_price = intent.getStringExtra("detail_price");
+        final String goods_id = intent.getStringExtra("goods_id");
+        final String detail_name = intent.getStringExtra("detail_name");
+        final String detail_price = intent.getStringExtra("detail_price");
         String detail_description = intent.getStringExtra("detail_description");
         final String detail_thumb = "http://" + intent.getStringExtra("detail_thumb");
 //        int data_ImageID = intent.getIntExtra("goods_imageID", -1);
@@ -51,21 +53,17 @@ public class goods_detail extends AppCompatActivity {
 
         button1 = (Button) findViewById(R.id.button1);
 
-//        new Thread(){
-//
-//            public void run() {
-//                Bitmap bitmap = null;
-//                try {
-//                    bitmap = Base64Tool.getBitmap(detail_thumb);
-//                    Log.i("哈哈哈哈", bitmap.toString());
-//                    Log.i("呵呵呵", );
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//
-//        }.start();
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(goods_detail.this, Order.class);
+                intent.putExtra("price", detail_price);
+                intent.putExtra("name", detail_name);
+                intent.putExtra("goods_id", goods_id);
+                startActivity(intent);
+
+            }
+        });
 
         nameTV.setText(detail_name);
         priceTV.setText(detail_price);

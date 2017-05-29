@@ -3,6 +3,7 @@ package object;
 import java.util.ArrayList;
 
 import listview.Address;
+import listview.Order_gen;
 
 /**
  * Created by Administrator on 2017/5/25.
@@ -16,7 +17,7 @@ public class User {
     private ArrayList<Address> addressList;
     private Address selectedAddress;
     private String name =null;
-
+    private ArrayList<Order_gen> orderList;
 
     public User() {
 
@@ -92,5 +93,13 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ArrayList<Order_gen> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(ArrayList<Order_gen> orderList) {
+        this.orderList = orderList;
     }
 }

@@ -3,34 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="60dp"
-        android:layout_alignParentStart="true"
-        android:background="@color/colorPrimary"
-        app:tabGravity="center"
-        app:tabIndicatorColor="@android:color/white"
-        app:tabIndicatorHeight="2dp"
-        app:tabMode="fixed"
 
-        app:tabSelectedTextColor="@android:color/white"
-        app:tabTextColor="@android:color/white">
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="60dp"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            app:tabGravity="center"
+            app:tabIndicatorColor="@android:color/white"
+            app:tabIndicatorHeight="2dp"
+            app:tabMode="fixed"
 
-    </android.support.design.widget.TabLayout>
+            app:tabSelectedTextColor="@android:color/white"
+            app:tabTextColor="@android:color/white">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/tab_layout"
-        android:background="@android:color/white" />
+        </android.support.design.widget.TabLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tab_layout"
+            android:background="@android:color/white" />
     </RelativeLayout>
 
     <!--侧滑菜单，左边隐藏的布局-->
@@ -40,31 +43,37 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="#F5F5F5"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="60dp">
 
         <RelativeLayout
             android:id="@+id/rl_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="12dp">
+            android:gravity="center_horizontal"
+            android:padding="20dp">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/ib_photo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/ic_menu_manage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
                 android:scaleType="center" />
 
             <TextView
+                android:id="@+id/nick_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/ib_photo"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/ib_photo"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="24dp"
                 android:text="昵称"
                 android:textColor="#000"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <ListView

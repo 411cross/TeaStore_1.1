@@ -34,6 +34,16 @@ public class register extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //设置 ToolBar 返回箭头
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         usernameET = (EditText) findViewById(R.id.register_et_username);
         passwordET = (EditText) findViewById(R.id.register_et_password);
         emailET = (EditText) findViewById(R.id.register_et_email);

@@ -58,34 +58,13 @@ public class StoresList extends AppCompatActivity implements View.OnClickListene
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        welTV = (TextView) findViewById(R.id.welcomeTV);
-        outTV = (TextView) findViewById(R.id.outTV);
-        user = GeneralOperation.getUser();
-        if(user.getName().equals("null")){
-            welTV.setText(user.getUsername() + " 欢迎你！");
-        }
-        else{
-            welTV.setText(user.getName()+" 欢迎你！");
-        }
-        welTV.setOnClickListener(this);
-        outTV.setOnClickListener(new View.OnClickListener() {
+        //设置 ToolBar 返回箭头
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                try {
-                    list = GeneralOperation.logout(user);
-                    if (Integer.parseInt((String) list.get(0)) == 204) {
-                        Toast.makeText(getApplicationContext(), "退出成功", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity_buy.class);
-                        startActivity(intent);
-//            String Authorization = data.getString("Authorization");
-                    } else {
-                        JSONObject object = new JSONObject((String) list.get(1));
-                        String message = object.getString("message");
-                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            public void onClick(View v) {
+                finish();
             }
         });
 

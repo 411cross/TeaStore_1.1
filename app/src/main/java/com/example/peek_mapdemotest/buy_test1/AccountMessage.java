@@ -37,7 +37,6 @@ public class AccountMessage extends AppCompatActivity {
     private Button modify_password_button;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +44,17 @@ public class AccountMessage extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //设置 ToolBar 返回箭头
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AccountMessage.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
 
         avatarImage = (ImageView) findViewById(R.id.avatarImage);
         accountName = (TextView) findViewById(R.id.account_name);
@@ -57,10 +67,9 @@ public class AccountMessage extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if(GeneralOperation.getUser().getName().equals("null")){
+        if (GeneralOperation.getUser().getName().equals("null")) {
             accountName.setText(GeneralOperation.getUser().getUsername());
-        }
-        else{
+        } else {
             accountName.setText(GeneralOperation.getUser().getName());
         }
 
@@ -70,12 +79,12 @@ public class AccountMessage extends AppCompatActivity {
         bianji_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AccountMessage.this,ModifyMessage.class);
+                Intent intent = new Intent(AccountMessage.this, ModifyMessage.class);
                 startActivity(intent);
             }
         });
 
-        modify_password_button= (Button) findViewById(R.id.modifyPassword_button);
+        modify_password_button = (Button) findViewById(R.id.modifyPassword_button);
         modify_password_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,9 +101,8 @@ public class AccountMessage extends AppCompatActivity {
                                 // TODO Auto-generated method stub
 
 
-
                                 try {
-                                    ArrayList setPwdResponse=UserOperation.setPwd(modify_password_ET.getText().toString());
+                                    ArrayList setPwdResponse = UserOperation.setPwd(modify_password_ET.getText().toString());
                                     if (Integer.parseInt((String) setPwdResponse.get(0)) != 201) {
                                         JSONObject object = new JSONObject((String) setPwdResponse.get(1));
                                         String message = object.getString("message");
@@ -120,7 +128,6 @@ public class AccountMessage extends AppCompatActivity {
                 alertDialog.show();
             }
         });
-
 
 
     }
